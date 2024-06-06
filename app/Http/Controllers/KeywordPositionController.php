@@ -11,16 +11,6 @@ use App\Models\Keyword;
 class KeywordPositionController extends Controller
 {
       
-    public function index2()
-    {
-        $sortField = request('sort', 'id');
-        $sortOrder = request('order', 'asc');
-        
-        $keywordPositions = KeywordPosition::orderBy($sortField, $sortOrder)->paginate(2);
-               
-        return view('keyword-positions.index', compact('keywordPositions'));
-    }
-  
     public function index(Request $request)
     {
         $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->paginate(2);
@@ -117,7 +107,7 @@ class KeywordPositionController extends Controller
     
     public function json()
     {
-        $keywordPositions = KeywordPosition::with('keyword')->with('domain')->orderBy('created_at', 'desc')->get();
+        $keywordPositions = KeywordPosition::with('keyword')->with('domain')->orderBy('updated_at', 'desc')->get();
 
         foreach ($keywordPositions as $keywordPosition) {
             $keywordPosition->created_at_format = $keywordPosition->created_at->format('d/m/Y');

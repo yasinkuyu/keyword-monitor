@@ -23,10 +23,10 @@
                     ],
 
                     service: 'google.selenium',
-                    domain: 'tekoil.com.tr',
-                    keyword: 'madeni yağ',
-                    country: 'tr',
-                    language: 'tr',
+                    domain: 'domain.com.tr',
+                    keyword: 'domain',
+                    country: 'en',
+                    language: 'en',
                     position: '',
                 };
             },
@@ -158,7 +158,7 @@
                                 if (data.error) {
                                     alert(data.error);
                                 } else {
-                                    this.position = data.position + ' sırada.';
+                                    this.position = data.position;
                                     this.getKeywords();
                                 }
 
@@ -191,7 +191,7 @@
                             if (data.error) {
                                 alert(data.error);
                             } else {
-                                this.position = data.position + ' sırada.';
+                                this.position = data.position;
                                 this.getKeywords();
                             }
 

@@ -110,8 +110,8 @@ const suggestedKeywords = ref([]);
 const service = ref('google.selenium');
 const domain = ref('domain.com');
 const keyword = ref('domain');
-const country = ref('tr');
-const language = ref('tr');
+const country = ref('us');
+const language = ref('en');
 const position = ref('');
 
 const serviceOptions = reactive([
@@ -200,80 +200,59 @@ const showRecaptcha = (id, sitekey) => {
         });
     });
 };
-
 const handleSubmit = () => {
     isLoading.value = true;
     error.value = null;
 
     const formData = new FormData();
-    formData.append('domain', domain.value);
-    formData.append('keyword', keyword.value);
-    formData.append('country', country.value);
-    formData.append('language', language.value);
-    formData.append('position', position.value);
-    formData.append('service', service.value);
+    formData.append("domain", domain.value);
+    formData.append("keyword", keyword.value);
+    formData.append("country", country.value);
+    formData.append("language", language.value);
+    formData.append("position", position.value);
+    formData.append("service", service.value);
 
-    if (isRecaptchaRequired.value) {
-        generateAndShowRecaptcha().then(recaptchaKey => {
-            formData.append('recaptcha_key', recaptchaKey);
+    const fetchData = (recaptchaKey = null) => {
+        if (recaptchaKey) {
+            formData.append("recaptcha_key", recaptchaKey);
+        }
 
-            fetch('/api/keyword-positions/search', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': props.csrf_token
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-
+        fetch("/api/keyword-positions/search", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRF-TOKEN": props.csrf_token,
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
                 if (data.error) {
                     alert(data.error);
                 } else {
-                    position.value = data.position + ' sırada.';
+                    position.value = data.position;
                     getKeywords();
                 }
 
                 isLoading.value = false;
                 console.log(data);
-                getKeywords();
-                grecaptcha.reset();
-                recaptchaKey.value = null;
             })
-            .catch(error => {
+            .catch((error) => {
                 isLoading.value = false;
-                error.value = 'Failed to search position: ' + error;
+                error.value = "Failed to search position: " + error;
                 console.error(error.value);
-                grecaptcha.reset();
-                recaptchaKey.value = null;
+                if (recaptchaKey) {
+                    grecaptcha.reset();
+                    recaptchaKey.value = null;
+                }
             });
+    };
+
+    if (isRecaptchaRequired.value) {
+        generateAndShowRecaptcha().then((recaptchaKey) => {
+            fetchData(recaptchaKey);
         });
     } else {
-        fetch('/api/keyword-positions/search', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': props.csrf_token
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-
-            if (data.error) {
-                alert(data.error);
-            } else {
-                position.value = data.position + ' sırada.';
-                getKeywords();
-            }
-
-            isLoading.value = false;
-            console.log(data);
-        })
-        .catch(error => {
-            isLoading.value = false;
-            error.value = 'Failed to search position: ' + error;
-            console.error(error.value);
-        });
+        fetchData();
     }
 };
 
