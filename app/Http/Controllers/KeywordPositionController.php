@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\KeywordPosition;
 use App\Models\Domain;
@@ -10,14 +11,42 @@ use App\Models\Keyword;
 class KeywordPositionController extends Controller
 {
       
-    public function index()
+    public function index2()
     {
         $sortField = request('sort', 'id');
         $sortOrder = request('order', 'asc');
         
-        $keywordPositions = KeywordPosition::orderBy($sortField, $sortOrder)->paginate(10);
+        $keywordPositions = KeywordPosition::orderBy($sortField, $sortOrder)->paginate(2);
                
         return view('keyword-positions.index', compact('keywordPositions'));
+    }
+  
+    public function index(Request $request)
+    {
+        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->paginate(2);
+
+        return Inertia::render('KeywordPositions', [
+            'keywordPositions' => $keywordPositions,
+            'filters' => request()->all('sort', 'direction'),
+            'links' => $keywordPositions->links(), 
+        ]);
+
+        
+        $sort = $request->get('sort', 'id');
+        $direction = $request->get('direction', 'asc');
+
+        $keywordPositions = KeywordPosition::with('domain', 'keyword')
+            ->orderBy($sort, $direction)
+            ->paginate();
+
+        return Inertia::render('KeywordPositions', [
+            'csrf_token' => Session::token(),
+            'keywordPositions' => $keywordPositions,
+            'sort' => [
+                'column' => $sort,
+                'direction' => $direction,
+            ],
+        ]);
     }
   
     public function search(Request $request)
