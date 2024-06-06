@@ -1,15 +1,8 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Keyword Position Tracking
+# Keyword Position Tracking
 
 Keyword Position Tracking is a web application built with Laravel framework. It allows users to track the position of their website for specific keywords on search engines like Google. The application provides features such as:
+
+## Features
 
 -   Keyword management: Add, edit, and delete keywords to track.
 -   Search engine selection: Choose the search engine to track (e.g., Google, Bing, Yahoo).
@@ -17,13 +10,12 @@ Keyword Position Tracking is a web application built with Laravel framework. It 
 -   Reporting: Generate reports to analyze the performance of your keywords over time.
 -   User authentication: Secure access to the application with user registration and login.
 
-<p align="center"><img src="screenshot.png" alt="Keyword Position Tracking Screenshot"></p>
-
 ## Technologies Used
 
--   Laravel (PHP web framework)
--   MySQL (Database)
--   VueJS (Front-end framework)
+-   Laravel 11.9 as the backend framework
+-   Vue.js 3 with Inertia.js for the frontend
+-   Tailwind CSS for styling
+-   Configuration files for Vite, Tailwind, and PHPUnit
 
 ## Learning Laravel
 
