@@ -19,6 +19,25 @@ Keyword Position Tracking is a web application built with Laravel framework. It 
 -   Tailwind CSS for styling
 -   Configuration files for Vite, Tailwind, and PHPUnit
 
+## Installation
+
+1. Clone the repository: `git clone https://github.com/yasinkuyu/keyword-tracker.git`
+2. Navigate to the project directory: `cd keyword-tracker`
+3. Install dependencies: `composer install` and `npm install`
+4. Copy the environment file: `cp .env.example .env`
+5. Generate an application key: `php artisan key:generate`
+6. Configure your database credentials in the `.env` file
+7. Run database migrations: `php artisan migrate`
+8. Start the development server: `php artisan serve`
+
+## Usage
+
+1. Register a new account or log in with your existing credentials
+2. Add keywords you want to track
+3. Select the search engine for tracking
+4. Monitor the position of your website for the added keywords
+5. Generate reports to analyze the performance over time
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
