@@ -100,7 +100,6 @@ var props = defineProps({
 });
 
 const keywordPositions = ref([]);
-
 const recaptchaKey = ref(null);
 const recaptchaId = ref(`recaptcha-${new Date().getTime()}`);
 const isRecaptchaHidden = ref(true);

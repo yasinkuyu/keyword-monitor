@@ -3,29 +3,25 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Keyword;
 use App\Models\Domain;
 
 class KeywordController extends Controller
 {
+
     public function index(Request $request)
     {
-        $sortField = $request->input('sort', 'id');
-        $sortOrder = $request->input('direction', 'asc');
-        $domain_id = $request->input('domain_id');
+        $listKeywords = Keyword::paginate(10);
 
-        $query = Keyword::orderBy($sortField, $sortOrder);
-
-        if (!empty($domain_id)) {
-            $query->where('domain_id', $domain_id);
-        }
-
-        $keywords = $query->paginate(10);
-
-        return view('keywords.index', compact('keywords'));
+        return Inertia::render('Keywords/ListKeywords', [
+            'listKeywords' => $listKeywords,
+            'filters' => request()->all('sort', 'direction', 'domain_id'),
+            'links' => $listKeywords->links(), 
+        ]);
     }
-    
+
     public function getKeywordPerformance(Request $request)
     {
         $domainId = $request->domain_id;

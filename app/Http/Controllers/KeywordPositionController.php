@@ -13,9 +13,9 @@ class KeywordPositionController extends Controller
       
     public function index(Request $request)
     {
-        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->paginate(2);
+        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->paginate(10);
 
-        return Inertia::render('KeywordPositions', [
+        return Inertia::render('KeywordPositions/ListKeywordPositions', [
             'keywordPositions' => $keywordPositions,
             'filters' => request()->all('sort', 'direction'),
             'links' => $keywordPositions->links(), 

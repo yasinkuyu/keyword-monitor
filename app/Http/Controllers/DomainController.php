@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Domain;
 use App\Models\KeywordPosition;
@@ -10,15 +11,16 @@ use App\Models\Keyword;
 
 class DomainController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
+        $listDomains = Domain::paginate(10);
 
-        $sortField = request('sort', 'id');
-        $sortOrder = request('direction', 'asc');
-
-        $domains = Domain::orderBy($sortField, $sortOrder)->paginate(10);
-
-        return view('domains.index', compact('domains'));
+        return Inertia::render('Domains/ListDomains', [
+            'listDomains' => $listDomains,
+            'filters' => request()->all('sort', 'direction'),
+            'links' => $listDomains->links(), 
+        ]);
     }
 
     public function report(Request $request)

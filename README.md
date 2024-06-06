@@ -28,7 +28,7 @@ Keyword Position Tracking is a web application built with Laravel framework. It 
 5. Generate an application key: `php artisan key:generate`
 6. Configure your database credentials in the `.env` file
 7. Run database migrations: `php artisan migrate`
-8. Start the development server: `php artisan serve`
+8. Start the development server: `php artisan serve` && `npm run dev`
 
 ## Usage
 

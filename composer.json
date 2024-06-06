@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "Monitor the positions of specified keywords on Google, allowing users to track their SEO performance over time.",
-    "keywords": ["laravel", "seo"],
+    "keywords": [
+        "laravel",
+        "seo"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -51,6 +54,10 @@
         ],
         "post-install-cmd": [
             "@php artisan ziggy:generate"
+        ],
+        "watch": [
+            "@php artisan serve --host=0.0.0.0 --port=8000",
+            "npm run watch"
         ]
     },
     "extra": {
