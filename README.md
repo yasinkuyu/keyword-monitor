@@ -1,4 +1,4 @@
-# Keyword Position Tracking
+# Keyword Position Tracker
 
 Keyword Position Tracking is a web application built with Laravel framework. It allows users to track the position of their website for specific keywords on search engines like Google. The application provides features such as:
 
