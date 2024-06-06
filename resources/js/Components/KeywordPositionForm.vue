@@ -65,8 +65,9 @@
                 </button>
             </div>
         </form>
-    </div> {{ keywordPositions }}
-    <KeywordPositionList  />
+    </div>
+    
+    <KeywordPositionList :keywordPositions="keywordPositions" />
 
 </template>
 
@@ -95,11 +96,10 @@ var props = defineProps({
         type: String,
         required: true
     },
-    keywordPositions:{
-        type: Object
-    },
     
 });
+
+const keywordPositions = ref([]);
 
 const recaptchaKey = ref(null);
 const recaptchaId = ref(`recaptcha-${new Date().getTime()}`);
@@ -108,8 +108,8 @@ const isLoading = ref(false);
 const error = ref(null);
 const suggestedKeywords = ref([]);
 const service = ref('google.selenium');
-const domain = ref('tekoil.com.tr');
-const keyword = ref('madeni yağ');
+const domain = ref('domain.com');
+const keyword = ref('domain');
 const country = ref('tr');
 const language = ref('tr');
 const position = ref('');
@@ -153,7 +153,7 @@ const getKeywords = () => {
     fetch(route("keyword-positions.json"))
         .then(response => response.json())
         .then(data => {
-            props.keywordPositions = data;
+            keywordPositions.value = data;
         })
         .catch(error => {
             console.error('Error fetching keywords:', error);

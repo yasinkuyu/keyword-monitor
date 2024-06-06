@@ -1,5 +1,21 @@
+
+<script setup>
+import { computed } from 'vue';
+
+const props = defineProps({
+    keywordPositions: {
+        type: Array,
+        required: true
+    }
+});
+
+const computedKeywordPositions = computed(() => props.keywordPositions);
+const isLoading = computed(() => computedKeywordPositions.value.length === 0);
+</script>  
+  
 <template>
-    <div class="container mx-auto mt-6">
+    <div v-if="isLoading">Yükleniyor...</div> 
+    <div v-else class="container mx-auto mt-6">
       <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
         <div class="text-xl font-semibold mb-4">Keyword Positions</div>
         <div class="overflow-x-auto">
@@ -16,7 +32,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="keywordPosition in keywordPositions" :key="keywordPosition.id" class="hover:bg-gray-100">
+              <tr v-for="keywordPosition in computedKeywordPositions" :key="keywordPosition.id" class="hover:bg-gray-100">
                 <td class="py-2 px-4 border-b border-gray-300">{{ keywordPosition.domain.name }}</td>
                 <td class="py-2 px-4 border-b border-gray-300">{{ keywordPosition.keyword.keyword }}</td>
                 <td class="py-2 px-4 border-b border-gray-300">{{ keywordPosition.position }}</td>
@@ -30,31 +46,5 @@
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        keywordPositions: []
-      };
-    },
-    mounted() {
-      // this.fetchKeywordPositions();
-    },
-    methods: {
-      fetchKeywordPositions() {
-        axios.get('/api/keyword-positions')
-          .then(response => {
-            this.keywordPositions = response.data;
-          })
-          .catch(error => {
-            console.error('Error fetching keyword positions:', error);
-          });
-      }
-    }
-  };
-  </script>
+</template>
   
