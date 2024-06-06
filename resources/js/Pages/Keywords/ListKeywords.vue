@@ -26,8 +26,8 @@ const { props } = usePage();
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white shadow sm:rounded-lg">
                     <div class="">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         <Link :href="filters.id">{{ 'ID' }}</Link>
@@ -43,14 +43,14 @@ const { props } = usePage();
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="listKeyword in listKeywords.data" :key="listKeyword.id">
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ listKeyword.id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ listKeyword.keyword }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ listKeyword.created_at }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                <tr v-for="listKeyword in listKeywords.data" :key="listKeyword.id" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                    <th scope="row" class="px-6 py-1">{{ listKeyword.id }}</th>
+                                    <td class="px-6 py-1">{{ listKeyword.keyword }}</td>
+                                    <td class="px-6 py-1">{{ listKeyword.created_at }}</td>
+                                    <td class="px-6 py-1">
                                         <Link :href="route('domains.edit', listKeyword.id)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">Edit</Link>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-1">
                                         <form :action="route('domains.destroy', listKeyword.id)" method="POST" @submit.prevent="() => { if (confirm('Are you sure?')) $inertia.delete(route('keywords.destroy', listKeyword.id)) }">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" :value="props.auth.csrf">
@@ -61,7 +61,7 @@ const { props } = usePage();
                             </tbody>
                         </table>
                         <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-                            <Link :href="route('domains.create')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add new domain</Link>
+                            <Link :href="route('domains.create')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Add new domain</Link>
                         </div> 
                         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                             <div class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
