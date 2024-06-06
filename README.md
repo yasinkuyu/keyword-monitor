@@ -29,14 +29,6 @@ If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Lar
 
 Thank you for considering contributing to the Keyword Position Tracking application! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within the Keyword Position Tracking application, please send an e-mail to [security@example.com](mailto:security@example.com). All security vulnerabilities will be promptly addressed.
-
 ## License
 
 The Keyword Position Tracking application is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
