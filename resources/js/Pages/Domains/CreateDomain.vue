@@ -8,34 +8,29 @@ import { Link, useForm, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 defineProps({
-    listDomains: Object,
-    keyword: {
+    name: {
         type: String,
-    },
-    domain_id: {
-        type: Number,
-    },
+    }
 });
 
-const keyword = usePage();
+const domain = usePage();
 
 const form = useForm({
-    keyword: keyword.keyword,
-    domain_id: keyword.domain_id,
+    name: domain.name,
 });
 
 const submit = () => {
-    form.post(route('keywords.store'));
+    form.post(route('domains.store'));
 };
 
 </script>
 
 <template>
-    <Head title="Create keyword" />
+    <Head title="Create domain" />
  
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create keyword</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create domain</h2>
         </template>
 
 
@@ -46,49 +41,29 @@ const submit = () => {
                         <section>
                             <header>
                                 <h2 class="text-lg font-medium text-gray-900">
-                                    Create New Keyword
+                                    Create New Domain
                                 </h2>
 
                                 <p class="mt-1 text-sm text-gray-600">
-                                    Create a new keyword for your domain.
+                                    Create a new domain for your project.
                                 </p>
                             </header>
 
                             <form @submit.prevent="submit" class="mt-6 space-y-6">
                                 <div>
-                                    <InputLabel for="keyword" value="Keyword" />
+                                    <InputLabel for="name" value="Domain name" />
 
                                     <TextInput
-                                        id="keyword"
+                                        id="name"
                                         type="text"
                                         class="mt-1 block w-full"
-                                        v-model="form.keyword"
+                                        v-model="form.name"
                                         required
                                         autofocus
-                                        autocomplete="keyword"
+                                        autocomplete="name"
                                     />
 
-                                    <InputError class="mt-2" :message="form.errors.keyword" />
-                                </div>
-
-                                <div>
-                                    <InputLabel for="domain_id" value="Domain" />
-
-                                    <DropdownInput
-                                        id="domain_id"
-                                        class="mt-1 block w-full"
-                                        v-model="form.domain_id"
-                                        required
-
-                                        :options="listDomains"
-                                    >
-                                        
-                                    </DropdownInput>
-
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.domain_id"
-                                    />
+                                    <InputError class="mt-2" :message="form.errors.name" />
                                 </div>
 
                                 <div class="flex items-center gap-4">
@@ -100,7 +75,7 @@ const submit = () => {
                                         leave-active-class="transition ease-in-out"
                                         leave-to-class="opacity-0"
                                     >
-                                        <p v-if="form.recentlySuccessful" class="text-sm text-green-600">Keyword saved</p>
+                                        <p v-if="form.recentlySuccessful" class="text-sm text-green-600">Domain saved</p>
                                     </Transition>
                                 </div>
                             </form>

@@ -79,19 +79,18 @@ class DomainController extends Controller
 
     public function create()
     {
-        return view('domains.create');
+        return Inertia::render('Domains/CreateDomain');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'unique:domains,name', 'max:255'],
+            'name' => ['required', 'unique:domains,name', 'max:255', 'regex:/^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/'],
         ]);
 
         Domain::create($request->all());
 
-        return redirect()->route('domains.index')
-                         ->with('success', 'Domain created successfully.');
+        return redirect()->route('domains.create');
     }
 
     public function edit(Domain $domain)
@@ -107,15 +106,11 @@ class DomainController extends Controller
 
         $domain->update($request->all());
 
-        return redirect()->route('domains.index')
-                        ->with('success','Domain updated successfully');
+        return redirect()->route('domains.create');
     }
 
     public function destroy(Domain $domain)
     {
         $domain->delete();
-
-        return redirect()->route('domains.index')
-                        ->with('success','Domain deleted successfully');
     }
 }

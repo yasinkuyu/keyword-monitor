@@ -68,7 +68,7 @@ const { props } = usePage();
                         <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                             <Link :href="route('keywords.create')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Add new keyword</Link>
                         </div> 
-                        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6" v-if="listKeywords.links > 1">
                             <div class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                             <Link
                                 v-for=" (link, index) in listKeywords.links" 
