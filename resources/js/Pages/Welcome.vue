@@ -89,13 +89,13 @@ function handleImageError() {
                         >
                             <div id="screenshot-container" class="relative flex w-full flex-1 items-stretch">
                                 <img
-                                    src="https://laravel.com/assets/img/welcome/docs-light.svg"
+                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screeenshot.png"
                                     alt="Laravel documentation screenshot"
                                     class="aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
                                     @error="handleImageError"
                                 />
                                 <img
-                                    src="https://laravel.com/assets/img/welcome/docs-dark.svg"
+                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screeenshot.png"
                                     alt="Laravel documentation screenshot"
                                     class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
                                 />
@@ -127,12 +127,14 @@ function handleImageError() {
                                     </div>
 
                                     <div class="pt-3 sm:pt-5 lg:pt-0">
-                                        <h2 class="text-xl font-semibold text-black dark:text-white">Documentation</h2>
+                                        <h2 class="text-xl font-semibold text-black dark:text-white">Keyword Position Tracker</h2>
 
                                         <p class="mt-4 text-sm/relaxed">
-                                            Laravel has wonderful documentation covering every aspect of the framework.
-                                            Whether you are a newcomer or have prior experience with Laravel, we
-                                            recommend reading our documentation from beginning to end.
+                                            This application was developed using the Laravel framework. Laravel is a web
+                                            application
+                                            framework written in the PHP language. It allows you to develop fast and secure
+                                            web
+                                            applications.
                                         </p>
                                     </div>
                                 </div>
@@ -154,7 +156,7 @@ function handleImageError() {
                         </a>
 
                         <a
-                            href="https://laracasts.com"
+                            href="/domains"
                             class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                         >
                             <div
@@ -175,12 +177,12 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Laracasts</h2>
+                                <h2 class="text-xl font-semibold text-black dark:text-white">Domains</h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript
-                                    development. Check them out, see for yourself, and massively level up your
-                                    development skills in the process.
+                                    Track multiple domains and keywords with our powerful monitoring tools, giving you a
+                                    comprehensive
+                                    view of your online presence and performance.
                                 </p>
                             </div>
 
@@ -200,7 +202,7 @@ function handleImageError() {
                         </a>
 
                         <a
-                            href="https://laravel-news.com"
+                            href="/keywords"
                             class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                         >
                             <div
@@ -227,12 +229,14 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Laravel News</h2>
+                                <h2 class="text-xl font-semibold text-black dark:text-white">Keywords</h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laravel News is a community driven portal and newsletter aggregating all of the
-                                    latest and most important news in the Laravel ecosystem, including new package
-                                    releases and tutorials.
+                                    Stay up-to-date with the latest trends and topics in the tech world by tracking
+                                    relevant keywords.
+                                    Our keyword monitoring feature allows you to easily follow and explore new
+                                    developments, emerging
+                                    technologies, and popular discussions within your areas of interest.
                                 </p>
                             </div>
 
@@ -272,67 +276,10 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Vibrant Ecosystem</h2>
+                                <h2 class="text-xl font-semibold text-black dark:text-white">Keywords Positions</h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laravel's robust library of first-party tools and libraries, such as
-                                    <a
-                                        href="https://forge.laravel.com"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white dark:focus-visible:ring-[#FF2D20]"
-                                        >Forge</a
-                                    >,
-                                    <a
-                                        href="https://vapor.laravel.com"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Vapor</a
-                                    >,
-                                    <a
-                                        href="https://nova.laravel.com"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Nova</a
-                                    >,
-                                    <a
-                                        href="https://envoyer.io"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Envoyer</a
-                                    >, and
-                                    <a
-                                        href="https://herd.laravel.com"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Herd</a
-                                    >
-                                    help you take your projects to the next level. Pair them with powerful open source
-                                    libraries like
-                                    <a
-                                        href="https://laravel.com/docs/billing"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Cashier</a
-                                    >,
-                                    <a
-                                        href="https://laravel.com/docs/dusk"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Dusk</a
-                                    >,
-                                    <a
-                                        href="https://laravel.com/docs/broadcasting"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Echo</a
-                                    >,
-                                    <a
-                                        href="https://laravel.com/docs/horizon"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Horizon</a
-                                    >,
-                                    <a
-                                        href="https://laravel.com/docs/sanctum"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Sanctum</a
-                                    >,
-                                    <a
-                                        href="https://laravel.com/docs/telescope"
-                                        class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white"
-                                        >Telescope</a
-                                    >, and more.
+                                    This section shows the positions of your tracked keywords in search engine results.
                                 </p>
                             </div>
                         </div>
