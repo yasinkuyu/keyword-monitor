@@ -10,6 +10,16 @@ class KeywordPosition extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     protected $fillable = ['position', 'domain_id', 'keyword_id', 'country', 'language'];
 
     protected $dates = ['created_at', 'updated_at'];
@@ -49,5 +59,16 @@ class KeywordPosition extends Model
                 'created_at' => $queryDate,
             ]);
         }
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param  \DateTimeInterface  $date
+     * @return string
+     */
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('d/m/Y');
     }
 }
