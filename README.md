@@ -30,6 +30,8 @@ Keyword Position Tracking is a web application built with Laravel framework. It 
 7. Run database migrations: `php artisan migrate`
 8. Start the development server: `php artisan serve` && `npm run dev`
 
+If you encounter any router issues, run the `php artisan ziggy:generate` command.
+
 ## Usage
 
 1. Register a new account or log in with your existing credentials

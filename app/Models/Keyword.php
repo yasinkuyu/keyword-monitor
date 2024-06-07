@@ -13,7 +13,7 @@ class Keyword extends Model
 
     public function domain()
     {
-        return $this->belongsTo(Domain::class);
+        return $this->belongsTo(Domain::class,);
     }
 
     public function positions()

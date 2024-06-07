@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Models\Keyword;
 use App\Models\Domain;
@@ -13,7 +14,7 @@ class KeywordController extends Controller
 
     public function index(Request $request)
     {
-        $listKeywords = Keyword::paginate(10);
+        $listKeywords = Keyword::with(['domain'])->paginate(10);
 
         return Inertia::render('Keywords/ListKeywords', [
             'listKeywords' => $listKeywords,
@@ -25,7 +26,7 @@ class KeywordController extends Controller
     public function getKeywordPerformance(Request $request)
     {
         $domainId = $request->domain_id;
-        // Örnek bir grafik verisi oluşturmak için rastgele veri oluşturuyoruz
+
         $chartData = [];
         for ($i = 0; $i < 30; $i++) {
             $chartData[] = [
@@ -39,9 +40,9 @@ class KeywordController extends Controller
 
     public function create()
     {
-        $domains = Domain::orderBy('name', 'ASC')->get();
+        $listDomains = Domain::orderBy('name', 'ASC')->get();
 
-        return view('keywords.create', compact('domains'));
+        return Inertia::render('Keywords/CreateKeyword', ['listDomains' => $listDomains]);
     }
 
     public function json(Request $request)
@@ -51,7 +52,7 @@ class KeywordController extends Controller
         return response()->json($keywords);
     }
 
-    // json için eklendi
+    // for ajax 
     public function save(Request $request)
     {
         $request->validate([
@@ -65,21 +66,14 @@ class KeywordController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
-            'keyword' => 'required|unique:keywords,keyword',
+            'keyword' => 'required|unique:keywords,keyword,NULL,id,domain_id,'.$request->input('domain_id'),
             'domain_id' => 'required',
         ]);
 
         Keyword::create($request->all());
 
-        return redirect()->route('keywords.index')
-                        ->with('success','Keyword created successfully.');
-    }
-
-    public function edit(Keyword $keyword)
-    {
-        return view('keywords.edit',compact('keyword'));
+        return redirect()->route('keywords.create');
     }
 
     public function update(Request $request, Keyword $keyword)
@@ -90,15 +84,11 @@ class KeywordController extends Controller
 
         $keyword->update($request->all());
 
-        return redirect()->route('keywords.index')
-                        ->with('success','Keyword updated successfully');
     }
 
     public function destroy(Keyword $keyword)
     {
         $keyword->delete();
 
-        return redirect()->route('keywords.index')
-                        ->with('success','Keyword deleted successfully');
     }
 }
