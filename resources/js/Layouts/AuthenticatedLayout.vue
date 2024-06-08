@@ -202,6 +202,15 @@ const showingNavigationDropdown = ref(false);
             <main>
                 <slot />
             </main>
+            <footer class="py-4 bg-gray-100 text-center">
+                <a
+                    href="https://github.com/yasinkuyu/keyword-tracker"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Keyword Position Tracker - Yasin Kuyu
+                </a>
+            </footer>
         </div>
     </div>
 </template>

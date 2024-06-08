@@ -89,13 +89,13 @@ function handleImageError() {
                         >
                             <div id="screenshot-container" class="relative flex w-full flex-1 items-stretch">
                                 <img
-                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screeenshot.png"
+                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screenshot.png"
                                     alt="Laravel documentation screenshot"
                                     class="aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
                                     @error="handleImageError"
                                 />
                                 <img
-                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screeenshot.png"
+                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screenshot.png"
                                     alt="Laravel documentation screenshot"
                                     class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
                                 />
