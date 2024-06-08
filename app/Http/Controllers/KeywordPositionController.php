@@ -20,23 +20,6 @@ class KeywordPositionController extends Controller
             'filters' => request()->all('sort', 'direction'),
             'links' => $keywordPositions->links(), 
         ]);
-
-        
-        $sort = $request->get('sort', 'id');
-        $direction = $request->get('direction', 'asc');
-
-        $keywordPositions = KeywordPosition::with('domain', 'keyword')
-            ->orderBy($sort, $direction)
-            ->paginate();
-
-        return Inertia::render('KeywordPositions', [
-            'csrf_token' => Session::token(),
-            'keywordPositions' => $keywordPositions,
-            'sort' => [
-                'column' => $sort,
-                'direction' => $direction,
-            ],
-        ]);
     }
   
     public function search(Request $request)
@@ -124,21 +107,23 @@ class KeywordPositionController extends Controller
         $languages = ['tr' => 'Türkçe', 'en' => 'English', 'es' => 'Spanish', 'de' => 'German'];
         $countries = ['tr' => 'Turkiye', 'us' => 'United States', 'uk' => 'United Kingdom', 'de' => 'Germany'];
         
-        return view('keyword-positions.create', compact('keywords', 'domains', 'countries', 'languages'));
+        return Inertia::render('KeywordPositions/CreateKeywordPosition', ['listKeywords' => $keywords, 'listDomains' => $domains, 'listLanguages' => $languages, 'listCountries' => $countries]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'domain_id' => 'required',
             'keyword_id' => 'required',
-            'query_date' => 'required|date',
+            'langauge' => 'required',
+            'country' => 'required',
             'position' => 'required|numeric',
+            'updated_at' => 'required|date',
         ]);
 
         KeywordPosition::create($request->all());
 
-        return redirect()->route('keyword-positions.index')
-                        ->with('success', 'Keyword Position created successfully.');
+        return redirect()->route('keyword-positions.create');
     }
 
     public function edit(KeywordPosition $keywordPosition)
@@ -150,14 +135,13 @@ class KeywordPositionController extends Controller
     {
         $request->validate([
             'keyword_id' => 'required',
-            'query_date' => 'required|date',
+            'updated_at' => 'required|date',
             'position' => 'required|numeric',
         ]);
 
         $keywordPosition->update($request->all());
 
-        return redirect()->route('keyword-positions.index')
-                        ->with('success', 'Keyword Position updated successfully');
+        return redirect()->route('keyword-positions.index');
     }
 
     public function show(KeywordPosition $keywordPosition)
@@ -168,8 +152,5 @@ class KeywordPositionController extends Controller
     public function destroy(KeywordPosition $keywordPosition)
     {
         $keywordPosition->delete();
-
-        return redirect()->route('keyword-positions.index')
-                        ->with('success', 'Keyword Position deleted successfully');
     }
 }

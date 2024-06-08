@@ -33,8 +33,6 @@ class DomainController extends Controller
 
         $keywords = $domain->keywords;
         
-        print_r($keywords);die();
-        
         $chartData = [];
 
         foreach ($keywords as $keyword) {

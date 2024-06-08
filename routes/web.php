@@ -28,9 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::get('api/keywords', [\App\Http\Controllers\KeywordController::class, 'json']);
     Route::post('api/keyword-positions/search', [\App\Http\Controllers\KeywordPositionController::class,'search']);
 
-    Route::resource('keyword-positions', KeywordPositionController::class);
 
 });
+
+Route::resource('keyword-positions', KeywordPositionController::class)->middleware(['auth']);
 
 Route::get('domains/report/{id}', [\App\Http\Controllers\DomainController::class, 'report'])->middleware(['auth'])->name('domains.report');
 Route::resource('domains', \App\Http\Controllers\DomainController::class)->middleware(['auth']);

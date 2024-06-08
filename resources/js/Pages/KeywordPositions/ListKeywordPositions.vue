@@ -49,7 +49,6 @@ const { props } = usePage();
                                         <Link :href="filters.position">{{ 'Position' }}</Link>
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -61,9 +60,6 @@ const { props } = usePage();
                                     <td class="px-6 py-1">{{ keywordPosition.country }}</td>
                                     <td class="px-6 py-1">{{ keywordPosition.created_at }}</td>
                                     <td class="px-6 py-1">{{ keywordPosition.position }}</td>
-                                    <td class="px-6 py-1">
-                                        <Link :href="route('keyword-positions.edit', keywordPosition.id)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">Edit</Link>
-                                    </td>
                                     <td class="px-6 py-1">
                                         <form :action="route('keyword-positions.destroy', keywordPosition.id)" method="POST" @submit.prevent="() => { if (confirm('Are you sure?')) $inertia.delete(route('keyword-positions.destroy', keywordPosition.id)) }">
                                             <input type="hidden" name="_method" value="DELETE">
@@ -77,7 +73,7 @@ const { props } = usePage();
                         <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                             <Link :href="route('keyword-positions.create')" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Add new keyword position</Link>
                         </div> 
-                        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+                        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6" v-if="keywordPositions.links > 1">
                             <div class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                             <Link
                                 v-for=" (link, index) in keywordPositions.links" 
