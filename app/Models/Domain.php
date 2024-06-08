@@ -34,6 +34,6 @@ class Domain extends Model
      */
     protected function serializeDate(\DateTimeInterface $date)
     {
-        return $date->format('d/m/Y');
+        return $date->format('d-m-Y');
     }
 }

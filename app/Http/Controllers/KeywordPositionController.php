@@ -9,6 +9,8 @@ use App\Models\Domain;
 use App\Models\Keyword; 
 use App\Models\Language; 
 use App\Models\Country; 
+use Auth;
+
 class KeywordPositionController extends Controller
 {
       
@@ -35,29 +37,59 @@ class KeywordPositionController extends Controller
             ->where('keyword_id', $keyword_id)
             ->get()
             ->groupBy(function($item) {
-                return $item->created_at->format('Y-m-d');
+                return $item->domain->name . '-' . $item->country . '-' . $item->language;
             });
 
         $labels = [];
-        $data = [];
-        foreach ($keywordPositions as $date => $positions) {
-            $labels[] = $date; 
-            $data[] = round($positions->avg('position')); 
+        $datasets = [];
+        $colors = [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+        $backgroundColors = [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
+
+        $colorIndex = 0;
+
+        foreach ($keywordPositions as $groupKey => $positions) {
+            list($domain_id, $country, $language) = explode('-', $groupKey);
+            $groupLabel = "{$domain_id}. {$country} {$language}";
+
+            if (empty($labels)) {
+                foreach ($positions as $position) {
+                    $labels[] = $position->created_at->format('d M');
+                }
+            }
+
+            $data = [];
+            foreach ($positions as $position) {
+                $data[] = round($position->position);
+            }
+
+            $datasets[] = [
+                'label' => $groupLabel,
+                'data' => $data,
+                'borderColor' => $colors[$colorIndex % count($colors)],
+                'backgroundColor' => $backgroundColors[$colorIndex % count($backgroundColors)],
+                'pointStyle' => 'circle',
+                'pointRadius' => 5,
+                'pointHoverRadius' => 8
+            ];
+
+            $colorIndex++;
         }
 
         $chartData = [
             'labels' => $labels,
-            'datasets' => [
-                [
-                    'label' => $keyword->keyword,
-                    'data' => $data,
-                    'borderColor' => 'rgba(255, 99, 132, 1)',
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'pointStyle' => 'circle',
-                    'pointRadius' => 5, // Küçük bir nokta boyutu
-                    'pointHoverRadius' => 8 // Hover sırasında biraz büyüt
-                ]
-            ]
+            'datasets' => $datasets
         ];
 
         $lastMonths = [];
@@ -80,6 +112,7 @@ class KeywordPositionController extends Controller
             'lastMonths' => $lastMonths,
         ]);
     }
+
 
     public function search(Request $request)
     {
@@ -134,11 +167,12 @@ class KeywordPositionController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        // Check if the keyword exists in the Keyword table, create it if not
-        $keywordRow = Keyword::firstOrCreate(['keyword' => $keyword]);
 
         // Check if the domain exists in the Domain table, create it if not
-        $domainRow = Domain::firstOrCreate(['name' => $domain]);
+        $domainRow = Domain::firstOrCreate(['name' => $domain, 'user_id' => Auth::id()]);
+
+        // Check if the keyword exists in the Keyword table, create it if not
+        $keywordRow = Keyword::firstOrCreate(['keyword' => $keyword, 'domain_id' => $domainRow->id]);
 
         // Update or create the KeywordPosition record
         KeywordPosition::updateOrCreatePosition($keywordRow->id, $position, $domainRow->id, $country, $language);
