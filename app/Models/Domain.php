@@ -19,7 +19,7 @@ class Domain extends Model
         'updated_at' => 'datetime',
     ];
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'user_id'];
 
     public function keywords()
     {

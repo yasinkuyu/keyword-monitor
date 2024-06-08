@@ -3,6 +3,8 @@
 import { defineProps } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteButton from '@/Components/DeleteButton.vue';
+import { useForm } from '@inertiajs/vue3';
 
 defineProps({
     listDomains: Object,
@@ -11,6 +13,25 @@ defineProps({
 });
 
 const { props } = usePage();
+
+const form = useForm({
+});
+
+const deleteDomain = (listDomain) => {
+    if (confirm('Are you sure you want to delete this domain?')) {
+        form.delete(route('domains.destroy', listDomain.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                // Code for successful operation
+            },
+            onError: (errors) => {
+                // Show alert in case of error
+                alert('An error occurred: ' + errors)
+            },
+            onFinish: () => form.reset(),
+        })
+    }
+}
 </script>
 
 
@@ -39,24 +60,20 @@ const { props } = usePage();
                                         <Link :href="filters.created_at">{{ 'Created At' }}</Link>
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="listDomain in listDomains.data" :key="listDomain.id" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                     <th scope="row" class="px-6 py-1">{{ listDomain.id }}</th>
-                                    <td class="px-6 py-1">{{ listDomain.name }}</td>
+                                    <td class="px-6 py-1 font-semibold text-black-300">{{ listDomain.name }}</td>
                                     <td class="px-6 py-1">{{ listDomain.created_at }}</td>
                                     <td class="px-6 py-1">
-                                        <Link :href="route('domains.edit', listDomain.id)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">Edit</Link>
-
-                                    </td>
-                                    <td class="px-6 py-1">
-                                        <form :action="route('domains.destroy', listDomain.id)" method="POST" @submit.prevent="() => { if (confirm('Are you sure?')) $inertia.delete(route('domains.destroy', listDomain.id)) }">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" :value="props.auth.csrf">
-                                            <button type="submit" class="bg-red-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">Delete</button>
-                                        </form>
+                                        <DeleteButton
+                                            class="ms-3"
+                                            :class="{ 'opacity-25': form.processing }"
+                                            :disabled="form.processing"
+                                            @click="deleteDomain(listDomain)"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>

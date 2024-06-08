@@ -80,7 +80,7 @@ const submit = () => {
                                         v-model="form.domain_id"
                                         required
 
-                                        :options="listDomains"
+                                        :options="listDomains.map(domain => ({ name: domain.name, value: domain.id }))"
                                     >
                                         
                                     </DropdownInput>

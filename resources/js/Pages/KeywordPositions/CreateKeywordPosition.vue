@@ -22,11 +22,13 @@ const props = defineProps({
     },
     language: {
         type: Number,
-        required: true
+        required: true,
+        default: () => 'en'
     },
     country: {
         type: Number,
-        required: true
+        required: true,
+        default: () => 'us'
     },
     position: {
         type: Number,
@@ -38,15 +40,13 @@ const props = defineProps({
     }
 });
 
-const keyword_position = usePage();
-
 const form = useForm({
-    updated_at: keyword_position.updated_at,
-    keyword_id: keyword_position.keyword_id,
-    domain_id: keyword_position.domain_id,
-    language: keyword_position.language,
-    country: keyword_position.country,
-    position: keyword_position.position
+    updated_at: props.updated_at,
+    keyword_id: props.keyword_id,
+    domain_id: props.domain_id,
+    language: props.language,
+    country: props.country,
+    position: props.position
 });
 
 const submit = () => {
@@ -79,112 +79,119 @@ const submit = () => {
                             </header>
 
                             <form @submit.prevent="submit" class="mt-6 space-y-6">
-                                <div>
-                                    <InputLabel for="updated_at" value="Updated At" />
 
-                                    <TextInput
-                                        id="updated_at"
-                                        type="datetime-local"
-                                        class="mt-1 block w-full"
-                                        v-model="form.updated_at"
-                                        required
-                                        autofocus
-                                        autocomplete="updated_at"
-                                        :value="new Date().toISOString().slice(0, 16)"
-                                        />
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <InputLabel for="updated_at" value="Updated At" />
 
-                                    <InputError class="mt-2" :message="form.errors.updated_at" />
-                                </div>
+                                            <TextInput
+                                                id="updated_at"
+                                                type="datetime-local"
+                                                class="mt-1 block w-full"
+                                                v-model="form.updated_at"
+                                                required
+                                                autofocus
+                                                autocomplete="updated_at"
+                                                :value="new Date().toISOString().slice(0, 16)"
+                                                />
 
-                                <div>
-                                    <InputLabel for="position" value="Position" />
+                                            <InputError class="mt-2" :message="form.errors.updated_at" />
+                                        </div>
 
-                                    <TextInput
-                                        id="position"
-                                        type="number"
-                                        class="mt-1 block w-full"
-                                        v-model="form.position"
-                                        required
-                                        autofocus
-                                        autocomplete="position"
-                                    />
+                                        <div>
+                                            <InputLabel for="position" value="Position" />
 
-                                    <InputError class="mt-2" :message="form.errors.position" />
-                                </div>
+                                            <TextInput
+                                                id="position"
+                                                type="number"
+                                                class="mt-1 block w-full"
+                                                v-model="form.position"
+                                                required
+                                                autofocus
+                                                autocomplete="position"
+                                            />
 
-                                <div>
-                                    <InputLabel for="keyword_id" value="Keyword id" />
+                                            <InputError class="mt-2" :message="form.errors.position" />
+                                            <p class="text-sm text-gray-500">Add a past ranking position for your keyword.</p>
+                                            </div>
 
-                                    <DropdownInput
-                                        id="keyword_id"
-                                        class="mt-1 block w-full"
-                                        v-model="form.keyword_id"
-                                        required
+                                        </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <InputLabel for="keyword_id" value="Keyword id" />
 
-                                        :options="listKeywords.map(keyword => ({ name: keyword.keyword }))"
-                                        
-                                    </DropdownInput>
+                                            <DropdownInput
+                                                id="keyword_id"
+                                                class="mt-1 block w-full"
+                                                v-model="form.keyword_id"
+                                                required
 
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.keyword_id"
-                                    />
-                                </div>
+                                                :options="listKeywords.map(keyword => ({ name: keyword.keyword, value: keyword.id }))"
+                                                
+                                            </DropdownInput>
 
-                                <div>
-                                    <InputLabel for="domain_id" value="Domain id" />
+                                            <InputError
+                                                class="mt-2"
+                                                :message="form.errors.keyword_id"
+                                            />
+                                        </div>
 
-                                    <DropdownInput
-                                        id="domain_id"
-                                        class="mt-1 block w-full"
-                                        v-model="form.domain_id"
-                                        required
+                                        <div>
+                                            <InputLabel for="domain_id" value="Domain id" />
 
-                                        :options="listDomains"
-                                    >
-                                        
-                                    </DropdownInput>
+                                            <DropdownInput
+                                                id="domain_id"
+                                                class="mt-1 block w-full"
+                                                v-model="form.domain_id"
+                                                required
 
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.domain_id"
-                                    />
-                                </div>
+                                                :options="listDomains.map(domain => ({ name: domain.name, value: domain.id }))"
+                                            >
+                                                
+                                            </DropdownInput>
 
-                                <div>
-                                    <InputLabel for="language" value="Language" />
+                                            <InputError
+                                                class="mt-2"
+                                                :message="form.errors.domain_id"
+                                            />
+                                        </div>
 
-                                    <DropdownInput
-                                        id="language"
-                                        class="mt-1 block w-full"
-                                        v-model="form.language"
-                                        required
-                                        :options="Object.entries(listLanguages).map(([id, name]) => ({ id, name }))"
-                                    </DropdownInput>
+                                        <div>
+                                            <InputLabel for="language" value="Language" />
 
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.language"
-                                    />
-                                </div>
+                                            <DropdownInput
+                                                id="language"
+                                                class="mt-1 block w-full"
+                                                v-model="form.language"
+                                                required
+                                                :options="listLanguages.map(lang => ({ name: lang.name, value: lang.code }))"> 
+                                            </DropdownInput>
 
-                                <div>
-                                    <InputLabel for="country" value="Country" />
+                                            <InputError
+                                                class="mt-2"
+                                                :message="form.errors.language"
+                                            />
+                                        </div>
 
-                                    <DropdownInput
-                                        id="country"
-                                        class="mt-1 block w-full"
-                                        v-model="form.country"
-                                        required
-                                        :options="Object.entries(listCountries).map(([id, name]) => ({ id, name }))"                                    >
-                                        
-                                    </DropdownInput>
+                                        <div>
+                                            <InputLabel for="country" value="Country" />
 
-                                    <InputError
-                                        class="mt-2"
-                                        :message="form.errors.country"
-                                    />
-                                </div>
+                                            <DropdownInput
+                                                id="country"
+                                                class="mt-1 block w-full"
+                                                v-model="form.country"
+                                                required
+                                                :options="listCountries.map(country => ({ name: country.name, value: country.code }))">
+                                                
+                                            </DropdownInput>
+
+                                            <InputError
+                                                class="mt-2"
+                                                :message="form.errors.country"
+                                            />
+                                        </div>
+                                    </div>
+                                     
 
                                 <div class="flex items-center gap-4">
                                     <PrimaryButton :disabled="form.processing">Save</PrimaryButton>

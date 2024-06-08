@@ -23,21 +23,6 @@ class KeywordController extends Controller
         ]);
     }
 
-    public function getKeywordPerformance(Request $request)
-    {
-        $domainId = $request->domain_id;
-
-        $chartData = [];
-        for ($i = 0; $i < 30; $i++) {
-            $chartData[] = [
-                'date' => date('Y-m-d', strtotime("-$i days")),
-                'position' => rand(1, 10)
-            ];
-        }
-
-        return response()->json(['chartData' => $chartData]);
-    }
-
     public function create()
     {
         $listDomains = Domain::orderBy('name', 'ASC')->get();
@@ -89,6 +74,5 @@ class KeywordController extends Controller
     public function destroy(Keyword $keyword)
     {
         $keyword->delete();
-
     }
 }

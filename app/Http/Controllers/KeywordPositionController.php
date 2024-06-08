@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\KeywordPosition;
 use App\Models\Domain;
 use App\Models\Keyword; 
-
+use App\Models\Language; 
+use App\Models\Country; 
 class KeywordPositionController extends Controller
 {
       
@@ -21,7 +22,65 @@ class KeywordPositionController extends Controller
             'links' => $keywordPositions->links(), 
         ]);
     }
-  
+
+    public function report(Request $request, $keyword_id = null)
+    {
+        $start_date = $request->input('start_date') ? $request->input('start_date') : now()->subDays(30);
+        $end_date = $request->input('end_date') ? $request->input('end_date') : now();
+
+        $keyword = Keyword::find($keyword_id);
+
+        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->where('keyword_id', $keyword_id)
+            ->get()
+            ->groupBy(function($item) {
+                return $item->created_at->format('Y-m-d');
+            });
+
+        $labels = [];
+        $data = [];
+        foreach ($keywordPositions as $date => $positions) {
+            $labels[] = $date; 
+            $data[] = round($positions->avg('position')); 
+        }
+
+        $chartData = [
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => $keyword->keyword,
+                    'data' => $data,
+                    'borderColor' => 'rgba(255, 99, 132, 1)',
+                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
+                    'pointStyle' => 'circle',
+                    'pointRadius' => 5, // Küçük bir nokta boyutu
+                    'pointHoverRadius' => 8 // Hover sırasında biraz büyüt
+                ]
+            ]
+        ];
+
+        $lastMonths = [];
+        for ($i = 0; $i <= 10; $i++) {
+            $month = date('F Y', strtotime("-$i months"));
+            $startDate = date('Y-m-01', strtotime("-$i months"));
+            $endDate = date('Y-m-t', strtotime("-$i months"));
+            $lastMonths[] = [
+                'name' => $month,
+                'startDate' => $startDate,
+                'endDate' => $endDate
+            ];
+        }
+
+        return Inertia::render('KeywordPositions/ReportKeywordPosition', [
+            'chartData' => $chartData,
+            'startDate' => date('Y-m-d', strtotime($start_date)),
+            'endDate' => date('Y-m-d', strtotime($end_date)),
+            'keyword' => $keyword,
+            'lastMonths' => $lastMonths,
+        ]);
+    }
+
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -75,14 +134,13 @@ class KeywordPositionController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        // Keyword tablosunda anahtar kelimenin olup olmadığını kontrol et
+        // Check if the keyword exists in the Keyword table, create it if not
         $keywordRow = Keyword::firstOrCreate(['keyword' => $keyword]);
 
-        // Domain tablosunda domainin olup olmadığını kontrol et
+        // Check if the domain exists in the Domain table, create it if not
         $domainRow = Domain::firstOrCreate(['name' => $domain]);
 
-        // KeywordPosition kaydını güncelle veya oluştur
+        // Update or create the KeywordPosition record
         KeywordPosition::updateOrCreatePosition($keywordRow->id, $position, $domainRow->id, $country, $language);
 
         return response()->json(['position' => $position]);
@@ -104,8 +162,8 @@ class KeywordPositionController extends Controller
     {
         $keywords = Keyword::orderBy('keyword', 'ASC')->get();
         $domains = Domain::orderBy('name', 'ASC')->get();
-        $languages = ['tr' => 'Türkçe', 'en' => 'English', 'es' => 'Spanish', 'de' => 'German'];
-        $countries = ['tr' => 'Turkiye', 'us' => 'United States', 'uk' => 'United Kingdom', 'de' => 'Germany'];
+        $languages = Language::orderBy('name', 'ASC')->get();
+        $countries = Country::orderBy('name', 'ASC')->get();
         
         return Inertia::render('KeywordPositions/CreateKeywordPosition', ['listKeywords' => $keywords, 'listDomains' => $domains, 'listLanguages' => $languages, 'listCountries' => $countries]);
     }
@@ -114,14 +172,25 @@ class KeywordPositionController extends Controller
     {
         $request->validate([
             'domain_id' => 'required',
-            'keyword_id' => 'required',
-            'langauge' => 'required',
+            'keyword_id' => 'required', 
+            'language' => 'required',
             'country' => 'required',
             'position' => 'required|numeric',
             'updated_at' => 'required|date',
         ]);
 
-        KeywordPosition::create($request->all());
+        $existingKeywordPosition = KeywordPosition::where('domain_id', $request->domain_id)
+            ->where('keyword_id', $request->keyword_id)
+            ->where('language', $request->language)
+            ->where('country', $request->country)
+            ->whereDate('created_at', now()->toDateString())
+            ->first();
+
+        if ($existingKeywordPosition) {
+            $existingKeywordPosition->update($request->all());
+        } else {
+            KeywordPosition::create($request->all());
+        }
 
         return redirect()->route('keyword-positions.create');
     }

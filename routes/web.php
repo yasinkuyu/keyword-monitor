@@ -27,10 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('api/keyword-positions', [\App\Http\Controllers\KeywordPositionController::class, 'json'])->name("keyword-positions.json");
     Route::get('api/keywords', [\App\Http\Controllers\KeywordController::class, 'json']);
     Route::post('api/keyword-positions/search', [\App\Http\Controllers\KeywordPositionController::class,'search']);
-
-
 });
 
+Route::post('/keyword-positions/report/{keyword_id}', [KeywordPositionController::class, 'report'])->name('keyword-positions.report');
+Route::get('/keyword-positions/report/{keyword_id}', [KeywordPositionController::class, 'report'])->name('keyword-positions.report');
 Route::resource('keyword-positions', KeywordPositionController::class)->middleware(['auth']);
 
 Route::get('domains/report/{id}', [\App\Http\Controllers\DomainController::class, 'report'])->middleware(['auth'])->name('domains.report');

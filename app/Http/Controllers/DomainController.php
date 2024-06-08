@@ -86,7 +86,7 @@ class DomainController extends Controller
             'name' => ['required', 'unique:domains,name', 'max:255', 'regex:/^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/'],
         ]);
 
-        Domain::create($request->all());
+        Domain::create(array_merge($request->all(), ['user_id' => auth()->id()]));
 
         return redirect()->route('domains.create');
     }

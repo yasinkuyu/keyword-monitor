@@ -2,6 +2,8 @@
 import { defineProps } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteButton from '@/Components/DeleteButton.vue';
+import { useForm } from '@inertiajs/vue3';
 
 defineProps({
     keywordPositions: Object,
@@ -10,6 +12,25 @@ defineProps({
 });
 
 const { props } = usePage();
+
+const form = useForm({
+});
+
+const deleteKeywordPosition = (keywordPosition) => {
+    if (confirm('Are you sure you want to delete this keyword position?')) {
+        form.delete(route('keyword-positions.destroy', keywordPosition.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                // Code for successful operation
+            },
+            onError: (errors) => {
+                // Show alert in case of error
+                alert('An error occurred: ' + errors)
+            },
+            onFinish: () => form.reset(),
+        })
+    }
+}
 </script>
 
 <template>
@@ -61,11 +82,12 @@ const { props } = usePage();
                                     <td class="px-6 py-1">{{ keywordPosition.created_at }}</td>
                                     <td class="px-6 py-1">{{ keywordPosition.position }}</td>
                                     <td class="px-6 py-1">
-                                        <form :action="route('keyword-positions.destroy', keywordPosition.id)" method="POST" @submit.prevent="() => { if (confirm('Are you sure?')) $inertia.delete(route('keyword-positions.destroy', keywordPosition.id)) }">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" :value="props.auth.csrf">
-                                            <button type="submit" class="bg-red-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded">Delete</button>
-                                        </form>
+                                        <DeleteButton
+                                            class="ms-3"
+                                            :class="{ 'opacity-25': form.processing }"
+                                            :disabled="form.processing"
+                                            @click="deleteKeywordPosition(keywordPosition)"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
