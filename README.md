@@ -4,6 +4,8 @@ Keyword Position Tracking is a web application built with Laravel framework. It 
 
 ![screenshot](https://github.com/yasinkuyu/keyword-tracker/blob/keyword-tracker/screenshot.png)
 
+![screenshot](https://github.com/yasinkuyu/keyword-tracker/blob/keyword-tracker/screenshot1.png)
+
 ## Features
 
 -   Keyword management: Add, edit, and delete keywords to track.
