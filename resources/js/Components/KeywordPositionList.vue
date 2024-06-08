@@ -21,7 +21,7 @@ const isLoading = computed(() => computedKeywordPositions.value.length === 0)
 
     <div v-else="!isLoading" class="container mx-auto mt-6">
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
-            <div class="text-xl font-semibold mb-4">Keyword Positions</div>
+            <div class="text-xl font-semibold mb-4">Recent Searches</div>
             <div class="overflow-x-auto">
                 <table
                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
@@ -41,7 +41,7 @@ const isLoading = computed(() => computedKeywordPositions.value.length === 0)
                     </thead>
                     <tbody>
                         <tr
-                            v-for="keywordPosition in computedKeywordPositions"
+                            v-for="keywordPosition in computedKeywordPositions.keywordPositions.data"
                             :key="keywordPosition.id"
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                         >
@@ -61,14 +61,15 @@ const isLoading = computed(() => computedKeywordPositions.value.length === 0)
                                 {{ keywordPosition.language }}
                             </td>
                             <td class="px-6 py-1 text-gray-500">
-                                {{ keywordPosition.created_at_format }}
+                                {{ keywordPosition.created_at }}
                             </td>
                             <td class="px-6 py-1 text-gray-500">
-                                {{ keywordPosition.updated_at_format }}
+                                {{ keywordPosition.updated_at }}
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                
             </div>
         </div>
     </div>

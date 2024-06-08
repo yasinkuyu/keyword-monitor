@@ -113,7 +113,6 @@ class KeywordPositionController extends Controller
         ]);
     }
 
-
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -182,14 +181,13 @@ class KeywordPositionController extends Controller
     
     public function json()
     {
-        $keywordPositions = KeywordPosition::with('keyword')->with('domain')->orderBy('updated_at', 'desc')->get();
+        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->orderBy('updated_at', 'ASC')->paginate(10);
 
-        foreach ($keywordPositions as $keywordPosition) {
-            $keywordPosition->created_at_format = $keywordPosition->created_at->format('d/m/Y');
-            $keywordPosition->updated_at_format = $keywordPosition->updated_at->format('d/m/Y H:i:s');
-        }
-
-        return response()->json($keywordPositions);
+        return response()->json([
+            'keywordPositions' => $keywordPositions,
+            'filters' => request()->all('sort', 'direction'),
+            'links' => $keywordPositions->links(), 
+        ]);
     }
 
     public function create()
