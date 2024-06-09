@@ -9,7 +9,7 @@ Keyword Monitor is a web application built with Laravel framework. It allows use
 ## Features
 
 -   Keyword management: Add, edit, and delete keywords to track.
--   Search engine selection: Choose the search engine to track (e.g., Google, Bing, Yahoo).
+-   Search engine selection: Choose the service to track (e.g., google.selenium, tools.seo.ai).
 -   Position tracking: Monitor the position of your website for each keyword on the selected search engine.
 -   Reporting: Generate reports to analyze the performance of your keywords over time.
 -   User authentication: Secure access to the application with user registration and login.

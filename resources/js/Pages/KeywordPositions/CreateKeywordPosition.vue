@@ -113,28 +113,10 @@ const submit = () => {
 
                                             <InputError class="mt-2" :message="form.errors.position" />
                                             <p class="text-sm text-gray-500">Add a past ranking position for your keyword.</p>
-                                            </div>
-
                                         </div>
+
+                                    </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <InputLabel for="keyword_id" value="Keyword id" />
-
-                                            <DropdownInput
-                                                id="keyword_id"
-                                                class="mt-1 block w-full"
-                                                v-model="form.keyword_id"
-                                                required
-
-                                                :options="listKeywords.map(keyword => ({ name: keyword.keyword, value: keyword.id }))"
-                                                
-                                            </DropdownInput>
-
-                                            <InputError
-                                                class="mt-2"
-                                                :message="form.errors.keyword_id"
-                                            />
-                                        </div>
 
                                         <div>
                                             <InputLabel for="domain_id" value="Domain id" />
@@ -153,6 +135,25 @@ const submit = () => {
                                             <InputError
                                                 class="mt-2"
                                                 :message="form.errors.domain_id"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel for="keyword_id" value="Keyword id" />
+
+                                            <DropdownInput
+                                                id="keyword_id"
+                                                class="mt-1 block w-full"
+                                                v-model="form.keyword_id"
+                                                required
+
+                                                :options="listKeywords.map(keyword => ({ name: keyword.keyword, value: keyword.id }))"
+                                                
+                                            </DropdownInput>
+
+                                            <InputError
+                                                class="mt-2"
+                                                :message="form.errors.keyword_id"
                                             />
                                         </div>
 
