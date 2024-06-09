@@ -56,4 +56,4 @@ Thank you for considering contributing to the Keyword Monitor application! The c
 
 ## License
 
-The Keyword Monitor application is open-sourced software licensed under the [License](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/LICENSE.md).
+The Keyword Monitor application is open-sourced software licensed under the [Apache License](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/LICENSE).
