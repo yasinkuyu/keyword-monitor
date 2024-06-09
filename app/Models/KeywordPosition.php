@@ -24,6 +24,11 @@ class KeywordPosition extends Model
 
     protected $dates = ['created_at', 'updated_at'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function keyword()
     {
         return $this->belongsTo(Keyword::class, 'keyword_id');

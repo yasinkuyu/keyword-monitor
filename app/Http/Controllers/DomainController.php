@@ -22,59 +22,7 @@ class DomainController extends Controller
             'links' => $listDomains->links(), 
         ]);
     }
-
-    public function report(Request $request)
-    {
-        $domain = Domain::find($request->id);
-
-        if (!$domain) {
-            return response()->json(['error' => 'Domain not found'], 404);
-        }
-
-        $keywords = $domain->keywords;
-        
-        $chartData = [];
-
-        foreach ($keywords as $keyword) {
-            print_r($keyword);
-            $positions = KeywordPosition::where("domain_id", $keyword->domain_id)
-                ->where("keyword_id", $keyword->id)
-                ->where('date', '>=', now()->subDays(30))
-                ->orderBy('date')
-                ->pluck('position')
-                ->toArray();
-
-            // Eğer bu anahtar kelimenin son 30 gün içinde pozisyon verisi yoksa, varsayılan olarak 0 ekleyin
-            if (count($positions) < 30) {
-                $missingDaysCount = 30 - count($positions);
-                $missingPositions = array_fill(0, $missingDaysCount, 0);
-                $positions = array_merge($missingPositions, $positions);
-            }
-
-            // Anahtar kelimenin ülke, dil ve domain bilgilerini al
-            $country = $keyword->country;
-            $language = $keyword->language;
-
-            // Veriyi chartData array'ine ekle
-            $chartData[] = [
-                'keyword' => $keyword->name,
-                'positions' => $positions,
-                'country' => $country,
-                'language' => $language,
-                'domain' => $domain->name
-            ];
-        }
-
-        // Ülke, dil ve domain'e göre gruplayın
-        $groupedChartData = collect($chartData)->groupBy(['country', 'language', 'domain']);
-        
-        print_r($groupedChartData);
-        
-        return response()->json([
-            'keywords' => $groupedChartData
-        ]);
-    }
-
+   
     public function create()
     {
         return Inertia::render('Domains/CreateDomain');

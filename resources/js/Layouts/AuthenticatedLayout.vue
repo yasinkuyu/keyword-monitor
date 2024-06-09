@@ -6,8 +6,9 @@ import DropdownLink from '@/Components/DropdownLink.vue'
 import NavLink from '@/Components/NavLink.vue'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
 import { Link } from '@inertiajs/vue3'
-
+ 
 const showingNavigationDropdown = ref(false)
+
 </script>
 
 <template>
@@ -203,7 +204,7 @@ const showingNavigationDropdown = ref(false)
                 <slot />
             </main>
             <footer class="py-4 bg-gray-100 text-center">
-                <a href="https://github.com/yasinkuyu/keyword-monitor" title="Keyword Monitor" target="_blank">{{ appName }} - Yasin Kuyu</a>
+                <a href="https://github.com/yasinkuyu/keyword-monitor" title="Keyword Monitor" target="_blank">{{ $page.props.appName }} - Yasin Kuyu</a>
             </footer>
         </div>
     </div>
