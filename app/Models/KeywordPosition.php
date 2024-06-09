@@ -65,7 +65,7 @@ class KeywordPosition extends Model
             ]);
         }
     }
-
+ 
     /**
      * Prepare a date for array / JSON serialization.
      *

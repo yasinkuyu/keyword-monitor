@@ -17,7 +17,8 @@ class KeywordPositionController extends Controller
     public function index(Request $request)
     {
 
-        $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])->paginate(10);
+         $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])
+            ->paginate(10);
 
         return Inertia::render('KeywordPositions/ListKeywordPositions', [
             'keywordPositions' => $keywordPositions,
@@ -212,7 +213,7 @@ class KeywordPositionController extends Controller
             'updated_at' => 'required|date',
         ]);
 
-        $existingKeywordPosition = Auth::user()->positions()->where('domain_id', $request->domain_id)
+        $existingKeywordPosition = KeywordPosition::where('domain_id', $request->domain_id)
             ->where('keyword_id', $request->keyword_id)
             ->where('language', $request->language)
             ->where('country', $request->country)

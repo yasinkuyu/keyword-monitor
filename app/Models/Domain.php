@@ -25,11 +25,15 @@ class Domain extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
 
     public function keywords()
     {
         return $this->hasMany(Keyword::class);
+    }
+
+    public function keywordPositions()
+    {
+        return $this->hasManyThrough(KeywordPosition::class, Keyword::class);
     }
 
     /**

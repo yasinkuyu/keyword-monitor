@@ -33,6 +33,7 @@ class User extends Authenticatable
     ];
 
 
+    
     public function domains()
     {
         return $this->hasMany(Domain::class, 'user_id');
@@ -45,7 +46,7 @@ class User extends Authenticatable
 
     public function positions()
     {
-        return $this->hasManyThrough(KeywordPosition::class, Keyword::class, 'domain_id', 'keyword_id', 'id', 'id');
+        return $this->hasManyThrough(KeywordPosition::class, Domain::class);
     }
 
     /**
