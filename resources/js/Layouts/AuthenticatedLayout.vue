@@ -1,13 +1,13 @@
 <script setup>
-import { ref } from "vue";
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-import Dropdown from "@/Components/Dropdown.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
-import NavLink from "@/Components/NavLink.vue";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import { Link } from "@inertiajs/vue3";
+import { ref } from 'vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import Dropdown from '@/Components/Dropdown.vue'
+import DropdownLink from '@/Components/DropdownLink.vue'
+import NavLink from '@/Components/NavLink.vue'
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
+import { Link } from '@inertiajs/vue3'
 
-const showingNavigationDropdown = ref(false);
+const showingNavigationDropdown = ref(false)
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('keywords.index')"
                                     :active="route().current('keywords')"
-                                > 
+                                >
                                     Keywords
                                 </NavLink>
                                 <NavLink
@@ -203,13 +203,7 @@ const showingNavigationDropdown = ref(false);
                 <slot />
             </main>
             <footer class="py-4 bg-gray-100 text-center">
-                <a
-                    href="https://github.com/yasinkuyu/keyword-tracker"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Keyword Position Tracker - Yasin Kuyu
-                </a>
+                <a href="https://github.com/yasinkuyu/keyword-monitor" title="Keyword Monitor" target="_blank">{{ appName }} - Yasin Kuyu</a>
             </footer>
         </div>
     </div>

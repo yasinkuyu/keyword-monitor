@@ -1,6 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { Head, Link } from '@inertiajs/vue3'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
 
 defineProps({
     canLogin: {
@@ -17,13 +17,14 @@ defineProps({
         type: String,
         required: true,
     },
-});
+    appName: String
+})
 
 function handleImageError() {
-    document.getElementById('screenshot-container')?.classList.add('!hidden');
-    document.getElementById('docs-card')?.classList.add('!row-span-1');
-    document.getElementById('docs-card-content')?.classList.add('!flex-row');
-    document.getElementById('background')?.classList.add('!hidden');
+    document.getElementById('screenshot-container')?.classList.add('!hidden')
+    document.getElementById('docs-card')?.classList.add('!row-span-1')
+    document.getElementById('docs-card-content')?.classList.add('!flex-row')
+    document.getElementById('background')?.classList.add('!hidden')
 }
 </script>
 
@@ -39,9 +40,13 @@ function handleImageError() {
             class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white"
         >
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+                <header
+                    class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3"
+                >
                     <div class="flex lg:justify-center lg:col-start-2">
-                        <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+                        <ApplicationLogo
+                            class="w-20 h-20 fill-current text-gray-500"
+                        />
                     </div>
                     <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
                         <Link
@@ -78,15 +83,18 @@ function handleImageError() {
                             id="docs-card"
                             class="flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                         >
-                            <div id="screenshot-container" class="relative flex w-full flex-1 items-stretch">
+                            <div
+                                id="screenshot-container"
+                                class="relative flex w-full flex-1 items-stretch"
+                            >
                                 <img
-                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screenshot.png"
+                                    src="https://github.com/yasinkuyu/keyword-monitor/raw/keyword-monitor/screenshot.png"
                                     alt="Laravel documentation screenshot"
                                     class="aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
                                     @error="handleImageError"
                                 />
                                 <img
-                                    src="https://github.com/yasinkuyu/keyword-tracker/raw/keyword-tracker/screenshot.png"
+                                    src="https://github.com/yasinkuyu/keyword-monitor/raw/keyword-monitor/screenshot.png"
                                     alt="Laravel documentation screenshot"
                                     class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
                                 />
@@ -95,8 +103,13 @@ function handleImageError() {
                                 ></div>
                             </div>
 
-                            <div class="relative flex items-center gap-6 lg:items-end">
-                                <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
+                            <div
+                                class="relative flex items-center gap-6 lg:items-end"
+                            >
+                                <div
+                                    id="docs-card-content"
+                                    class="flex items-start gap-6 lg:flex-col"
+                                >
                                     <div
                                         class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
                                     >
@@ -118,13 +131,18 @@ function handleImageError() {
                                     </div>
 
                                     <div class="pt-3 sm:pt-5 lg:pt-0">
-                                        <h2 class="text-xl font-semibold text-black dark:text-white">Keyword Position Tracker</h2>
+                                        <h2
+                                            class="text-xl font-semibold text-black dark:text-white"
+                                        >
+                                            Keyword Monitor
+                                        </h2>
 
                                         <p class="mt-4 text-sm/relaxed">
-                                            This application was developed using the Laravel framework. Laravel is a web
-                                            application
-                                            framework written in the PHP language. It allows you to develop fast and secure
-                                            web
+                                            This application was developed using
+                                            the Laravel framework. Laravel is a
+                                            web application framework written in
+                                            the PHP language. It allows you to
+                                            develop fast and secure web
                                             applications.
                                         </p>
                                     </div>
@@ -168,12 +186,17 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Domains</h2>
+                                <h2
+                                    class="text-xl font-semibold text-black dark:text-white"
+                                >
+                                    Domains
+                                </h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Track multiple domains and keywords with our powerful monitoring tools, giving you a
-                                    comprehensive
-                                    view of your online presence and performance.
+                                    Track multiple domains and keywords with our
+                                    powerful monitoring tools, giving you a
+                                    comprehensive view of your online presence
+                                    and performance.
                                 </p>
                             </div>
 
@@ -220,14 +243,20 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Keywords</h2>
+                                <h2
+                                    class="text-xl font-semibold text-black dark:text-white"
+                                >
+                                    Keywords
+                                </h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Stay up-to-date with the latest trends and topics in the tech world by tracking
-                                    relevant keywords.
-                                    Our keyword monitoring feature allows you to easily follow and explore new
-                                    developments, emerging
-                                    technologies, and popular discussions within your areas of interest.
+                                    Stay up-to-date with the latest trends and
+                                    topics in the tech world by tracking
+                                    relevant keywords. Our keyword monitoring
+                                    feature allows you to easily follow and
+                                    explore new developments, emerging
+                                    technologies, and popular discussions within
+                                    your areas of interest.
                                 </p>
                             </div>
 
@@ -267,10 +296,15 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Keywords Positions</h2>
+                                <h2
+                                    class="text-xl font-semibold text-black dark:text-white"
+                                >
+                                    Keywords Positions
+                                </h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    This section shows the positions of your tracked keywords in search engine results.
+                                    This section shows the positions of your
+                                    tracked keywords in search engine results.
                                 </p>
                             </div>
                         </div>
@@ -278,7 +312,7 @@ function handleImageError() {
                 </main>
 
                 <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                    Keyword Position Tracker
+                    <a href="https://github.com/yasinkuyu/keyword-monitor" title="Keyword Monitor" target="_blank">{{ appName }} - Yasin Kuyu</a>
                 </footer>
             </div>
         </div>

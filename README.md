@@ -1,10 +1,10 @@
-# Keyword Position Tracker
+# Keyword Monitor
 
 Keyword Position Tracking is a web application built with Laravel framework. It allows users to track the position of their website for specific keywords on search engines like Google. The application provides features such as:
 
-![screenshot](https://github.com/yasinkuyu/keyword-tracker/blob/keyword-tracker/screenshot.png)
+![screenshot](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/screenshot.png)
 
-![screenshot](https://github.com/yasinkuyu/keyword-tracker/blob/keyword-tracker/screenshot1.png)
+![screenshot](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/screenshot1.png)
 
 ## Features
 
@@ -23,8 +23,8 @@ Keyword Position Tracking is a web application built with Laravel framework. It 
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/yasinkuyu/keyword-tracker.git`
-2. Navigate to the project directory: `cd keyword-tracker`
+1. Clone the repository: `git clone https://github.com/yasinkuyu/keyword-monitor.git`
+2. Navigate to the project directory: `cd keyword-monitor`
 3. Install dependencies: `composer install` and `npm install`
 4. Copy the environment file: `cp .env.example .env`
 5. Generate an application key: `php artisan key:generate`

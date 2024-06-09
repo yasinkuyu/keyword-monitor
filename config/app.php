@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Keyword Position Tracker'),
+    'name' => env('APP_NAME', 'Keyword Monitor'),
 
     /*
     |--------------------------------------------------------------------------
