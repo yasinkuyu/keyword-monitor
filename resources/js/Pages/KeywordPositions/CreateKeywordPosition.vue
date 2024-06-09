@@ -34,14 +34,14 @@ const props = defineProps({
         type: Number,
         required: true
     },
-    updated_at: {
+    created_at: {
         type: Date,
         default: () => new Date().toISOString().slice(0, 16)
     }
 });
 
 const form = useForm({
-    updated_at: props.updated_at,
+    created_at: props.created_at,
     keyword_id: props.keyword_id,
     domain_id: props.domain_id,
     language: props.language,
@@ -82,20 +82,20 @@ const submit = () => {
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <InputLabel for="updated_at" value="Updated At" />
+                                            <InputLabel for="created_at" value="created_at" />
 
                                             <TextInput
-                                                id="updated_at"
+                                                id="created_at"
                                                 type="datetime-local"
                                                 class="mt-1 block w-full"
-                                                v-model="form.updated_at"
+                                                v-model="form.created_at"
                                                 required
                                                 autofocus
-                                                autocomplete="updated_at"
+                                                autocomplete="created_at"
                                                 :value="new Date().toISOString().slice(0, 16)"
                                                 />
 
-                                            <InputError class="mt-2" :message="form.errors.updated_at" />
+                                            <InputError class="mt-2" :message="form.errors.created_at" />
                                         </div>
 
                                         <div>

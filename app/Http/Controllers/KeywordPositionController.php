@@ -32,10 +32,9 @@ class KeywordPositionController extends Controller
         $end_date = $request->input('end_date') ? $request->input('end_date') : now();
 
         $keyword = Keyword::find($keyword_id);
-
         $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])
-            ->whereBetween('created_at', [$start_date, $end_date])
-            ->where('keyword_id', $keyword_id)
+            ->whereBetween('keyword_positions.created_at', [$start_date, $end_date])
+            ->where('keyword_positions.keyword_id', $keyword_id)
             ->get()
             ->groupBy(function($item) {
                 return $item->domain->name . '-' . $item->country . '-' . $item->language;
@@ -209,14 +208,14 @@ class KeywordPositionController extends Controller
             'language' => 'required',
             'country' => 'required',
             'position' => 'required|numeric',
-            'updated_at' => 'required|date',
+            'created_at' => 'required|date',
         ]);
 
         $existingKeywordPosition = KeywordPosition::where('domain_id', $request->domain_id)
             ->where('keyword_id', $request->keyword_id)
             ->where('language', $request->language)
             ->where('country', $request->country)
-            ->whereDate('created_at', now()->toDateString())
+            ->whereDate('created_at', $request->created_at)
             ->first();
 
         if ($existingKeywordPosition) {
