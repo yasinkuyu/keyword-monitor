@@ -1,6 +1,6 @@
 # Keyword Monitor
 
-Keyword Position Tracking is a web application built with Laravel framework. It allows users to track the position of their website for specific keywords on search engines like Google. The application provides features such as:
+Keyword Monitor is a web application built with Laravel framework. It allows users to track the position of their website for specific keywords on search engines like Google. The application provides features such as:
 
 ![screenshot](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/screenshot.png)
 
@@ -52,8 +52,8 @@ If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Lar
 
 ## Contributing
 
-Thank you for considering contributing to the Keyword Position Tracking application! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Thank you for considering contributing to the Keyword Monitor application! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
 ## License
 
-The Keyword Position Tracking application is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Keyword Monitor application is open-sourced software licensed under the [License](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/LICENSE.md).
