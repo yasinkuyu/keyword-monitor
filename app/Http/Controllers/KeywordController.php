@@ -8,13 +8,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Models\Keyword;
 use App\Models\Domain;
+use Auth;
 
 class KeywordController extends Controller
 {
 
     public function index(Request $request)
     {
-        $listKeywords = Keyword::with(['domain'])->paginate(10);
+        $listKeywords = Auth::user()->keywords()->with(['domain'])->paginate(10);
 
         return Inertia::render('Keywords/ListKeywords', [
             'listKeywords' => $listKeywords,
@@ -25,7 +26,7 @@ class KeywordController extends Controller
 
     public function create()
     {
-        $listDomains = Domain::orderBy('name', 'ASC')->get();
+        $listDomains = Auth::user()->domains()->orderBy('name', 'ASC')->get();
 
         return Inertia::render('Keywords/CreateKeyword', ['listDomains' => $listDomains]);
     }
@@ -33,7 +34,7 @@ class KeywordController extends Controller
     public function json(Request $request)
     {
         $query = $request->input('query');
-        $keywords = Keyword::where('keyword', 'LIKE', "%$query%")->get();
+        $keywords = Auth::user()->keywords()->where('keyword', 'LIKE', "%$query%")->get();
         return response()->json($keywords);
     }
 

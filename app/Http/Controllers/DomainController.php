@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use App\Models\Domain;
 use App\Models\KeywordPosition;
 use App\Models\Keyword; 
+use Auth;
 
 class DomainController extends Controller
 {
 
     public function index(Request $request)
     {
-        $listDomains = Domain::paginate(10);
+        $listDomains = Auth::user()->domains()->paginate(10);
 
         return Inertia::render('Domains/ListDomains', [
             'listDomains' => $listDomains,

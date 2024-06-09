@@ -32,6 +32,22 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
+    public function domains()
+    {
+        return $this->hasMany(Domain::class, 'user_id');
+    }
+
+    public function keywords()
+    {
+        return $this->hasManyThrough(Keyword::class, Domain::class, 'user_id', 'domain_id');
+    }
+
+    public function positions()
+    {
+        return $this->hasManyThrough(KeywordPosition::class, Keyword::class, 'domain_id', 'keyword_id', 'id', 'id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

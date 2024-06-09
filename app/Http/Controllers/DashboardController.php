@@ -8,6 +8,7 @@ use App\Models\KeywordPosition;
 use App\Models\Domain;
 use App\Models\Keyword; 
 use Session;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -15,9 +16,9 @@ class DashboardController extends Controller
     public function index()
     {
         
-        $keywordCount = Keyword::count();
-        $domainCount = Domain::count();
-        $positionCount = KeywordPosition::count();
+        $keywordCount = Auth::user()->keywords()->count();
+        $domainCount = Auth::user()->domains()->count();
+        $positionCount = Auth::user()->positions()->count();
 
         return Inertia::render("Dashboard", [
             'keywordCount' => $keywordCount,

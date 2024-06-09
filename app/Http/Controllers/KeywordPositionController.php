@@ -16,7 +16,8 @@ class KeywordPositionController extends Controller
       
     public function index(Request $request)
     {
-        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->paginate(10);
+
+        $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])->paginate(10);
 
         return Inertia::render('KeywordPositions/ListKeywordPositions', [
             'keywordPositions' => $keywordPositions,
@@ -32,7 +33,7 @@ class KeywordPositionController extends Controller
 
         $keyword = Keyword::find($keyword_id);
 
-        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])
+        $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])
             ->whereBetween('created_at', [$start_date, $end_date])
             ->where('keyword_id', $keyword_id)
             ->get()
@@ -181,7 +182,7 @@ class KeywordPositionController extends Controller
     
     public function json()
     {
-        $keywordPositions = KeywordPosition::with(['domain', 'keyword'])->orderBy('updated_at', 'ASC')->paginate(10);
+        $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])->orderBy('updated_at', 'ASC')->paginate(10);
 
         return response()->json([
             'keywordPositions' => $keywordPositions,
@@ -192,8 +193,8 @@ class KeywordPositionController extends Controller
 
     public function create()
     {
-        $keywords = Keyword::orderBy('keyword', 'ASC')->get();
-        $domains = Domain::orderBy('name', 'ASC')->get();
+        $keywords = Auth::user()->keywords()->orderBy('keyword', 'ASC')->get();
+        $domains = Auth::user()->domains()->orderBy('name', 'ASC')->get();
         $languages = Language::orderBy('name', 'ASC')->get();
         $countries = Country::orderBy('name', 'ASC')->get();
         
@@ -211,7 +212,7 @@ class KeywordPositionController extends Controller
             'updated_at' => 'required|date',
         ]);
 
-        $existingKeywordPosition = KeywordPosition::where('domain_id', $request->domain_id)
+        $existingKeywordPosition = Auth::user()->positions()->where('domain_id', $request->domain_id)
             ->where('keyword_id', $request->keyword_id)
             ->where('language', $request->language)
             ->where('country', $request->country)
