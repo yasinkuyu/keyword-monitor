@@ -22,7 +22,7 @@ const props = defineProps({
 })
 
 // Initialize form with props
-const form = useForm({
+var form = useForm({
     start_date: props.startDate,
     end_date: props.endDate,
 })
@@ -56,8 +56,9 @@ const fetchData = () => {
 
 // Function to set selected date range
 const setDateRange = () => {
-    form.start_date = props.selectedMonth.startDate
-    form.end_date = props.selectedMonth.endDate
+    form.start_date = selectedMonth.value.startDate;
+    form.end_date =  selectedMonth.value.endDate;
+
     fetchData()
 }
 // Function to render chart
