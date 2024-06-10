@@ -119,40 +119,6 @@ class KeywordSearchController extends Controller
     public function search(Request $request)
     {
 
-
-        // Örnek verilerdeki anahtar kelime ve domain ID'lerini alın
-$keywordIds = [1, 2, 4, 3, 5, 6];
-$domainId = 1;
-
-foreach ($keywordIds as $keywordId) {
-    $keyword = Keyword::find($keywordId);
-    $domain = Domain::find($domainId);
-
-    if ($keyword && $domain) {
-        $startDate = Carbon::now()->subDays(500);
-        $endDate = Carbon::now();
-
-        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
-            $position = rand(0, 100); // Rastgele bir pozisyon değeri (0-100 arasında)
-            $language = 'tr';
-            $country = 'tr';
-
-            $data = [
-                'keyword_id' => $keyword->id,
-                'domain_id' => $domain->id,
-                'position' => $position,
-                'language' => $language,
-                'country' => $country,
-                'created_at' => $date->toDateTimeString(),
-                'updated_at' => $date->toDateTimeString(),
-            ];
-
-            DB::table('keyword_positions')->insert($data);
-        }
-    }
-}
-
-
         $domain_id = $request->input('domain_id');
         $keyword_id = $request->input('keyword_id');
         $country = $request->input('country');
