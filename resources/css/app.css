@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sp-search-container .sp-search-input:focus {
+    box-shadow: none !important;
+}
