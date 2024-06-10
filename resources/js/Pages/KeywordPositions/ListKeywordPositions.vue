@@ -113,7 +113,29 @@ const deleteKeywordPosition = (keywordPosition) => {
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap"><div class="flex items-center justify-center w-8 h-8 text-green-500 bg-green-100 rounded-full dark:bg-gray-800">{{ keywordPosition.position }}</div></td>
+                                                        <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                                            <a
+                                                                :href="
+                                                                    route(
+                                                                        'keyword-positions.report',
+                                                                        keywordPosition.keyword_id,
+                                                                    )
+                                                                "
+                                                                :class="[
+                                                                    'px-2 py-1 rounded-xl hover:text-white',
+                                                                    keywordPosition.position === 0
+                                                                    ? 'text-gray-700 bg-gray-200 hover:bg-gray-600'
+                                                                    : keywordPosition.position <= 20
+                                                                    ? 'text-green-700 bg-green-200 hover:bg-green-600'
+                                                                    : keywordPosition.position <= 50
+                                                                        ? 'text-orange-700 bg-orange-200 hover:bg-orange-600'
+                                                                        : keywordPosition.position <= 100
+                                                                        ? 'text-gray-700 bg-gray-200 hover:bg-gray-600'
+                                                                        : '',
+                                                                ]"
+                                                                >{{ keywordPosition.position }}</a
+                                                            >
+                                                        </td>
                                                         <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ keywordPosition.country }}</td>
                                                         <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ keywordPosition.language }}</td>
                                                         <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ keywordPosition.created_at }}</td>

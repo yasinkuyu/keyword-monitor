@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import Keyword from '@/Components/Keyword.vue';
 
 const props = defineProps({
     keywordPositions: {
@@ -49,7 +50,7 @@ const isLoading = computed(() => computedKeywordPositions.value.length === 0)
                                 {{ keywordPosition.domain.name }}
                             </th>
                             <td class="px-6 py-1">
-                                <a :href="route('keyword-positions.report', keywordPosition.keyword_id)" class="px-2 py-1 text-green-500 bg-green-50 rounded-xl dark:bg-gray-800 hover:bg-yellow-200 hover:text-yellow-700">{{ keywordPosition.keyword.keyword }}</a>
+                                <Keyword :keywordPosition="keywordPosition" />
                             </td>
                             <td class="px-6 py-1 text-base">
                                 {{ keywordPosition.position }}
