@@ -16,8 +16,8 @@ class KeywordPosition extends Model
      * @var array
      */
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     protected $fillable = ['position', 'domain_id', 'keyword_id', 'country', 'language'];
@@ -66,14 +66,4 @@ class KeywordPosition extends Model
         }
     }
  
-    /**
-     * Prepare a date for array / JSON serialization.
-     *
-     * @param  \DateTimeInterface  $date
-     * @return string
-     */
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format('d-m-Y');
- }
 }
