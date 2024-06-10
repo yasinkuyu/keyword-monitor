@@ -115,18 +115,19 @@ class KeywordPositionController extends Controller
 
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-        $domain = $request->input('domain');
+
+        $domain_id = $request->input('domain_id');
+        $keyword_id = $request->input('keyword_id');
         $country = $request->input('country');
         $language = $request->input('language');
         $service = $request->input('service');
 
-        if (!$keyword) {
-            return response()->json(['error' => 'Enter the keyword.'], 404);
+        if (!$domain_id) {
+            return response()->json(['error' => 'Enter the domain.'], 404);
         }
 
-        if (!$domain) {
-            return response()->json(['error' => 'Enter the domain.'], 404);
+        if (!$keyword_id) {
+            return response()->json(['error' => 'Enter the keyword.'], 404);
         }
 
         if (!$country) {
@@ -140,6 +141,12 @@ class KeywordPositionController extends Controller
         if (!$service) {
             return response()->json(['error' => 'Select the service.'], 404);
         }
+
+        $domainRow = Domain::find($domain_id);
+        $keywordRow = Keyword::find($keyword_id);
+
+        $domain = $domainRow->name;
+        $keyword = $keywordRow->keyword;    
 
         try {
 
@@ -168,10 +175,10 @@ class KeywordPositionController extends Controller
         }
 
         // Check if the domain exists in the Domain table, create it if not
-        $domainRow = Domain::firstOrCreate(['name' => $domain, 'user_id' => Auth::id()]);
+        // $domainRow = Domain::firstOrCreate(['name' => $domain, 'user_id' => Auth::id()]);
 
         // Check if the keyword exists in the Keyword table, create it if not
-        $keywordRow = Keyword::firstOrCreate(['keyword' => $keyword, 'domain_id' => $domainRow->id]);
+        // $keywordRow = Keyword::firstOrCreate(['keyword' => $keyword, 'domain_id' => $domainRow->id]);
 
         // Update or create the KeywordPosition record
         KeywordPosition::updateOrCreatePosition($keywordRow->id, $position, $domainRow->id, $country, $language);

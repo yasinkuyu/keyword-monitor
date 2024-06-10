@@ -24,6 +24,21 @@ class DomainController extends Controller
         ]);
     }
    
+    public function json(Request $request)
+    {
+
+        return Auth::user()->domains()
+                ->orderBy('name')
+                ->where('name', 'like', '%' . $request->search . '%')
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn ($domain) => [
+                    'id' => $domain->id,
+                    'name' => $domain->name,
+                ]);
+
+    }
+
     public function create()
     {
         return Inertia::render('Domains/CreateDomain');

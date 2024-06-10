@@ -8,7 +8,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="service">
                         Service
                     </label>
-                    <select v-model="service" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" required>
+                    <select v-model="service" class="block appearance-none w-full py-2 px-3 pr-8 rounded  border-gray-200 focus:outline-none focus:bg-white focus:border-gray-500" required>
                         <option v-for="option in serviceOptions" :value="option.value" :key="option.value">
                             {{ option.text }}
                         </option>
@@ -18,26 +18,19 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="domain">
                         Domain
                     </label>
-                    <input type="text" v-model="domain" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" required autocomplete="off">
+                    <SelectPageList v-model="domain_id" @fetch-data="fetchDomains" />
                 </div>
                 <div class="w-full md:w-1/4 px-3">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="keyword">
                         Keyword
                     </label>
-                    <input type="text" v-model="keyword" @input="fetchKeywords" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" required autocomplete="off">
-                    <div v-if="suggestedKeywords.length" class="autocomplete-list mt-1 bg-white border border-gray-300 rounded shadow-lg">
-                        <ul class="list-outside hover:list-inside">
-                            <li class="m-2" v-for="suggestedKeyword in suggestedKeywords" :key="suggestedKeyword.keyword" @click="selectKeyword(suggestedKeyword)">
-                                <a href="#" class="text-gray-700">{{ suggestedKeyword.keyword }}</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <SelectPageList v-model="keyword_id" @fetch-data="fetchKeywords" />
                 </div>
                 <div class="w-full md:w-1/6 px-3">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="language">
                         Lang
                     </label>
-                    <select v-model="language" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" required>
+                    <select v-model="language" class="block appearance-none w-full py-2 px-3 pr-8 rounded border-gray-200 focus:outline-none focus:bg-white focus:border-gray-500" required>
                         <option v-for="(lang, code) in languages" :value="code" :key="code">{{ lang }}</option>
                     </select>
                 </div>
@@ -45,7 +38,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="country">
                         Country
                     </label>
-                    <select v-model="country" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" required>
+                    <select v-model="country" class="block appearance-none w-full py-2 px-3 pr-8 rounded border-gray-200 focus:outline-none focus:bg-white focus:border-gray-500" required>
                         <option v-for="(countryName, code) in countries" :value="code" :key="code">{{ countryName }}</option>
                     </select>
                 </div>
@@ -53,7 +46,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="position">
                         Position
                     </label>
-                    <input v-model="position" id="position" name="position" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly />
+                    <input v-model="position" id="position" name="position" class="block appearance-none w-full py-2 px-3 pr-8 rounded border-gray-200 focus:outline-none focus:bg-white focus:border-gray-500" readonly />
                 </div>
             </div>
             <div v-if="!isRecaptchaHidden && isRecaptchaRequired" :id="recaptchaId"></div>
@@ -74,6 +67,8 @@
 <script setup>
 
 import KeywordPositionList from '@/Components/KeywordPositionList.vue';
+import { SelectPageList } from 'v-selectpage'
+import {  useForm } from '@inertiajs/vue3';
 
 import { ref, reactive, computed, onMounted } from 'vue';
 
@@ -95,8 +90,7 @@ var props = defineProps({
     csrf_token: {
         type: String,
         required: true
-    },
-    
+    }, 
 });
 
 const keywordPositions = ref([]);
@@ -105,10 +99,9 @@ const recaptchaId = ref(`recaptcha-${new Date().getTime()}`);
 const isRecaptchaHidden = ref(true);
 const isLoading = ref(false);
 const error = ref(null);
-const suggestedKeywords = ref([]);
 const service = ref('google.selenium');
-const domain = ref('domain.com');
-const keyword = ref('domain');
+const domain_id = ref('domain.com');
+const keyword_id = ref('domain');
 const country = ref('us');
 const language = ref('en');
 const position = ref('');
@@ -128,27 +121,45 @@ const recaptchaSitekey = computed(() => {
     return selectedService ? selectedService.sitekey : '';
 });
 
-const fetchKeywords = () => {
-    if (keyword.value.length > 2) {
-        fetch(`/api/keywords?query=${keyword.value}`)
-            .then(response => response.json())
-            .then(data => {
-                suggestedKeywords.value = data;
-            })
-            .catch(error => {
-                console.error('Error fetching keywords:', error);
-            });
-    } else {
-        suggestedKeywords.value = [];
-    }
-};
+const fetchKeywords = (data, callback) => {
+    const { search, pageNumber, pageSize } = data;
 
-const selectKeyword = (suggestedKeyword) => {
-    keyword.value = suggestedKeyword.keyword;
-    suggestedKeywords.value = [];
-};
+    fetch(`/api/keywords?search=${search}&page=${pageNumber}&per_page=${pageSize}`)
+        .then(response => response.json())
+        .then(result => {
+            const filtered = result.data;
 
-const getKeywords = () => {
+            callback(
+                filtered,
+                result.total
+            );
+        })
+        .catch(error => {
+            console.error('Error fetching keywords:', error);
+            callback([], 0);
+        });
+}
+
+const fetchDomains = (data, callback) => {
+    const { search, pageNumber, pageSize } = data;
+
+    fetch(`/api/domains?search=${search}&page=${pageNumber}&per_page=${pageSize}`)
+        .then(response => response.json())
+        .then(result => {
+            const filtered = result.data;
+
+            callback(
+                filtered,
+                result.total
+            );
+        })
+        .catch(error => {
+            console.error('Error fetching dpöa,ms:', error);
+            callback([], 0);
+        });
+}
+
+const listRecentSearches = () => {
     fetch(route("keyword-positions.json"))
         .then(response => response.json())
         .then(data => {
@@ -204,8 +215,8 @@ const handleSubmit = () => {
     error.value = null;
 
     const formData = new FormData();
-    formData.append("domain", domain.value);
-    formData.append("keyword", keyword.value);
+    formData.append("domain_id", domain_id.value);
+    formData.append("keyword_id", keyword_id.value);
     formData.append("country", country.value);
     formData.append("language", language.value);
     formData.append("position", position.value);
@@ -229,7 +240,7 @@ const handleSubmit = () => {
                     alert(data.error);
                 } else {
                     position.value = data.position;
-                    getKeywords();
+                    listRecentSearches();
                 }
 
                 isLoading.value = false;
@@ -256,7 +267,7 @@ const handleSubmit = () => {
 };
 
 onMounted(() => {
-    getKeywords();
+    listRecentSearches();
     var recaptcha_script = document.createElement('script');
     recaptcha_script.type = 'text/javascript';
     recaptcha_script.src = 'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit';

@@ -6,8 +6,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\KeywordPositionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\DomainController;
 
-
+// Welcome route
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -17,27 +20,42 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+// Dashboard route with middleware
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
+// Authenticated routes
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Profile routes
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
-    Route::get('api/keyword-positions', [\App\Http\Controllers\KeywordPositionController::class, 'json'])->name("keyword-positions.json");
-    Route::get('api/keywords', [\App\Http\Controllers\KeywordController::class, 'json']);
-    Route::post('api/keyword-positions/search', [\App\Http\Controllers\KeywordPositionController::class,'search']);
+    // API routes
+    Route::prefix('api')->group(function () {
+        Route::get('keywords', [KeywordController::class, 'json']);
+        Route::get('domains', [DomainController::class, 'json']);
+        Route::get('keyword-positions', [KeywordPositionController::class, 'json'])->name('keyword-positions.json');
+        Route::post('keyword-positions/search', [KeywordPositionController::class, 'search']);
+    });
+
+    // Keyword positions routes
+    Route::resource('keyword-positions', KeywordPositionController::class);
+    Route::prefix('keyword-positions')->group(function () {
+        Route::match(['get', 'post'], 'report/{keyword_id}', [KeywordPositionController::class, 'report'])->name('keyword-positions.report');
+    });
+
+    // Domain routes
+    Route::resource('domains', DomainController::class);
+    Route::get('domains/report/{id}', [DomainController::class, 'report'])->name('domains.report');
+
+    // Keyword routes
+    Route::resource('keywords', KeywordController::class);
+    Route::get('keywords/report/{id}', [KeywordController::class, 'report'])->name('keywords.domain');
 });
 
-Route::post('/keyword-positions/report/{keyword_id}', [KeywordPositionController::class, 'report'])->name('keyword-positions.report');
-Route::get('/keyword-positions/report/{keyword_id}', [KeywordPositionController::class, 'report'])->name('keyword-positions.report');
-Route::resource('keyword-positions', KeywordPositionController::class)->middleware(['auth']);
-
-Route::get('domains/report/{id}', [\App\Http\Controllers\DomainController::class, 'report'])->middleware(['auth'])->name('domains.report');
-Route::resource('domains', \App\Http\Controllers\DomainController::class)->middleware(['auth']);
-
-Route::get('keywords/report/{id}', [\App\Http\Controllers\KeywordController::class, 'report'])->middleware(['auth'])->name('keywords.domain');
-Route::resource('keywords', \App\Http\Controllers\KeywordController::class)->middleware(['auth']);
-
- 
+// Auth routes
 require __DIR__.'/auth.php';

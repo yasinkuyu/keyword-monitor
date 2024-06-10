@@ -41,7 +41,7 @@ class User extends Authenticatable
 
     public function keywords()
     {
-        return $this->hasManyThrough(Keyword::class, Domain::class, 'user_id', 'domain_id');
+        return $this->hasManyThrough(Keyword::class, Domain::class);
     }
 
     public function positions()

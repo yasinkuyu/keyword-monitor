@@ -33,9 +33,18 @@ class KeywordController extends Controller
 
     public function json(Request $request)
     {
-        $query = $request->input('query');
-        $keywords = Auth::user()->keywords()->where('keyword', 'LIKE', "%$query%")->get();
-        return response()->json($keywords);
+
+        return Auth::user()->keywords()->with(['domain'])
+                ->orderBy('keyword')
+                ->where('keyword', 'like', '%' . $request->search . '%')
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn ($keyword) => [
+                    'id' => $keyword->id,
+                    'name' => $keyword->keyword,
+                    'desc' => $keyword->domain->name,
+                ]);
+
     }
 
     // for ajax 
