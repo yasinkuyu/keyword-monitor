@@ -10,6 +10,8 @@ class KeywordPosition extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -62,8 +64,10 @@ class KeywordPosition extends Model
                 'country' => $country,
                 'language' => $language,
                 'created_at' => $queryDate,
+                'updated_at' => Carbon::now(),
             ]);
         }
+
     }
  
 }

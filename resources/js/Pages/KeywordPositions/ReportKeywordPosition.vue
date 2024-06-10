@@ -1,51 +1,42 @@
 <script setup>
 import { defineProps, ref, watch, onMounted } from 'vue'
-import { Head, Link, usePage } from '@inertiajs/vue3'
+import { Head, usePage } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import DeleteButton from '@/Components/DeleteButton.vue'
 import { useForm } from '@inertiajs/vue3'
 import Chart from 'chart.js/auto'
 import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import TextInput from '@/Components/TextInput.vue'
 
+// Define props
 const props = defineProps({
     chartData: Object,
     filters: Object,
     links: Object,
-    startDate: {
-        type: String,
-    },
-    endDate: {
-        type: String,
-    },
-    chart: {
-        type: Object,
-        default: null,
-    },
-    keyword: {
-        type: Object
-    },
-    lastMonths: {
-        type: Object
-    },
-    selectedMonth: {
-        type: Object
-    }
+    startDate: String,
+    endDate: String,
+ 
+    keyword: Object,
+    lastMonths: Object,
+    selectedMonth: Object
 })
 
-const { props: pageProps } = usePage()
-
-var form = useForm({
+// Initialize form with props
+const form = useForm({
     start_date: props.startDate,
     end_date: props.endDate,
 })
 
+// Define refs for chart
 const chartRef = ref(null)
 const chartInstance = ref(null)
+const isChartLoaded = ref(false)
 const selectedMonth = ref(null)
 
+// Function to fetch data
 const fetchData = () => {
+    if (!isChartLoaded.value) return
+
     form.post(
         route('keyword-positions.report', {
             keyword_id: props.keyword.id,
@@ -54,30 +45,24 @@ const fetchData = () => {
         }),
         {
             preserveScroll: true,
-            onSuccess: () => {
-                renderChart()
-            },
+            onSuccess: () => updateChart(),
             onError: (errors) => {
-                // Hata durumunda uyarı göster
                 alert('Bir hata oluştu: ' + errors)
             },
             onFinish: () => form.reset(),
-        },
+        }
     )
 }
 
+// Function to set selected date range
 const setDateRange = () => {
-
-    form.start_date = selectedMonth.value.startDate;
-    form.end_date =  selectedMonth.value.endDate;
-
-    fetchData();
+    form.start_date = props.selectedMonth.startDate
+    form.end_date = props.selectedMonth.endDate
+    fetchData()
 }
-
+// Function to render chart
 const renderChart = () => {
-    if (chartInstance.value) {
-        chartInstance.value.destroy()
-    }
+    if (chartInstance.value) chartInstance.value.destroy()
 
     chartInstance.value = new Chart(chartRef.value.getContext('2d'), {
         type: 'line',
@@ -86,15 +71,22 @@ const renderChart = () => {
             datasets: props.chartData.datasets,
         },
         options: {
-            
             responsive: true,
-             maintainAspectRatio: false,
+            maintainAspectRatio: false,
         },
     })
+    isChartLoaded.value = true
 }
 
+// Function to update chart
+const updateChart = () => {
+    if (chartInstance.value) chartInstance.value.destroy()
+    renderChart()
+}
+
+// On mounted hook to render chart initially
 onMounted(() => {
-    fetchData()
+    renderChart()
 })
 </script>
 
@@ -128,6 +120,7 @@ onMounted(() => {
                                             required
                                             autofocus
                                             autocomplete="start_date"
+                                            @change="setSelectDate"
                                         />
                                     </div>
                                     <div>
@@ -143,6 +136,7 @@ onMounted(() => {
                                             required
                                             autofocus
                                             autocomplete="end_date"
+                                            @change="setSelectDate"
                                         />
                                     </div>
                                     <div>
@@ -172,8 +166,9 @@ onMounted(() => {
                                     </div>
                                     <div>
                                         <PrimaryButton
-                                            @click="fetchData"
+                                            @click="fetchData()"
                                             class="mt-7"
+                                            :disabled="!isChartLoaded"
                                         >
                                             Fetch Data
                                         </PrimaryButton>
@@ -185,15 +180,7 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
-                        >
-                            <Link
-                                :href="route('keywords.index')"
-                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-                                >Return</Link
-                            >
-                        </div>
+                        
                     </div>
                 </div>
             </div>

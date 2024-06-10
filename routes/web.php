@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\KeywordPositionController;
+use App\Http\Controllers\KeywordSearchController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
@@ -38,13 +39,13 @@ Route::middleware('auth')->group(function () {
         Route::get('keywords', [KeywordController::class, 'json']);
         Route::get('domains', [DomainController::class, 'json']);
         Route::get('keyword-positions', [KeywordPositionController::class, 'json'])->name('keyword-positions.json');
-        Route::post('keyword-positions/search', [KeywordPositionController::class, 'search']);
+        Route::post('keyword-positions/search', [KeywordSearchController::class, 'search']);
     });
 
     // Keyword positions routes
     Route::resource('keyword-positions', KeywordPositionController::class);
     Route::prefix('keyword-positions')->group(function () {
-        Route::match(['get', 'post'], 'report/{keyword_id}', [KeywordPositionController::class, 'report'])->name('keyword-positions.report');
+        Route::match(['get', 'post'], 'report/{keyword_id}', [KeywordSearchController::class, 'report'])->name('keyword-positions.report');
     });
 
     // Domain routes
