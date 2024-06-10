@@ -188,7 +188,7 @@ class KeywordPositionController extends Controller
     
     public function json()
     {
-        $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])->orderBy('updated_at', 'ASC')->paginate(10);
+        $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])->orderBy('updated_at', 'DESC')->paginate(10);
 
         return response()->json([
             'keywordPositions' => $keywordPositions,

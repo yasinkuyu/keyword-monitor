@@ -49,7 +49,7 @@ const isLoading = computed(() => computedKeywordPositions.value.length === 0)
                                 {{ keywordPosition.domain.name }}
                             </th>
                             <td class="px-6 py-1">
-                                {{ keywordPosition.keyword.keyword }}
+                                <a :href="route('keyword-positions.report', keywordPosition.keyword_id)" class="px-2 py-1 text-green-500 bg-green-50 rounded-xl dark:bg-gray-800 hover:bg-yellow-200 hover:text-yellow-700">{{ keywordPosition.keyword.keyword }}</a>
                             </td>
                             <td class="px-6 py-1 text-base">
                                 {{ keywordPosition.position }}
