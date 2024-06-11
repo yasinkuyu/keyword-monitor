@@ -18,8 +18,10 @@ return new class extends Migration
         Schema::create('keyword_positions', function (Blueprint $table) {
             $table->id();
             $table->integer('position')->nullable();
-            $table->string('country', 20)->nullable();
-            $table->string('language', 20)->nullable();
+            
+            $table->string('country', 5)->nullable();
+            $table->string('language', 5)->nullable();
+
             $table->foreignId('service_id')->nullable();
             $table->foreignId('keyword_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('domain_id')->nullable()->constrained()->onDelete('cascade');
