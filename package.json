@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "chart.js": "^4.4.3",
-        "v-selectpage": "^3.0.1"
+        "v-selectpage": "^3.0.1",
+        "vue-tailwind-datepicker": "^1.7.3"
     }
 }
