@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('keywords', function (Blueprint $table) {
             $table->id();
             $table->foreignId('domain_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('keyword'); // Yeni sütun ekleniyor
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            //$table->timestamps();
+            $table->string('keyword'); 
+            $table->timestamps();
         });
     }
 

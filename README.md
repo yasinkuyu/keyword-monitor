@@ -42,6 +42,16 @@ If you encounter any router issues, run the `php artisan ziggy:generate` command
 4. Monitor the position of your website for the added keywords
 5. Generate reports to analyze the performance over time
 
+## Demo Data
+
+    php artisan migrate:rollback && php artisan migrate && php artisan db:seed
+
+Demo data usage instructions:
+
+1. You can restore, recreate, and add demo data to the database by running the above command.
+2. These commands will delete all existing data in your database. So use them carefully.
+3. Demo data can be used to test certain features of your application.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
