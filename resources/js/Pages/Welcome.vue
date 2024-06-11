@@ -84,14 +84,14 @@ function handleImageError() {
                                 class="relative flex w-full flex-1 items-stretch"
                             >
                                 <img
-                                    src="https://github.com/yasinkuyu/keyword-monitor/raw/keyword-monitor/screenshot.png"
-                                    alt="Laravel documentation screenshot"
+                                    src="https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot.jpg"
+                                    alt="Keyword monitor screenshot"
                                     class="aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
                                     @error="handleImageError"
                                 />
                                 <img
-                                    src="https://github.com/yasinkuyu/keyword-monitor/raw/keyword-monitor/screenshot.png"
-                                    alt="Laravel documentation screenshot"
+                                    src="https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot.jpg"
+                                    alt="Keyword monitor screenshot"
                                     class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
                                 />
                                 <div

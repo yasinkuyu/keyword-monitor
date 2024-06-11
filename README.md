@@ -2,9 +2,15 @@
 
 Keyword Monitor is a web application built with Laravel framework. It allows users to track the position of their website for specific keywords on search engines like Google. The application provides features such as:
 
-![screenshot](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/screenshot.png)
+![screenshot](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot.jpg)
 
-![screenshot](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/screenshot1.png)
+![screenshot 1](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot1.jpg)
+
+![screenshot 2](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot2.jpg)
+
+![screenshot 3](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot3.jpg)
+
+![screenshot 4](https://github.com/yasinkuyu/keyword-monitor/blob/keyword-monitor/assets/screenshot4.jpg)
 
 ## Features
 
