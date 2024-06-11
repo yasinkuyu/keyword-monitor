@@ -22,7 +22,7 @@ class KeywordPosition extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
-    protected $fillable = ['position', 'domain_id', 'keyword_id', 'country', 'language'];
+    protected $fillable = ['position', 'serice_id', 'domain_id', 'keyword_id', 'country', 'language'];
 
     protected $dates = ['created_at', 'updated_at'];
 

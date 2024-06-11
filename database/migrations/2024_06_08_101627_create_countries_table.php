@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
-class CreateCountriesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +20,11 @@ class CreateCountriesTable extends Migration
             $table->string('name'); 
         });
 
-        $countries = ['tr' => 'Turkiye', 'us' => 'United States', 'uk' => 'United Kingdom', 'de' => 'Germany'];
+        $countries = [
+            'tr' => 'TR', 
+            'us' => 'US', 
+        ];
+        
         foreach ($countries as $code => $name) {
             DB::table('countries')->insert([
                 'code' => $code,
@@ -37,4 +42,4 @@ class CreateCountriesTable extends Migration
     {
         Schema::dropIfExists('countries');
     }
-}
+};

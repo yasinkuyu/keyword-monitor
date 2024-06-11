@@ -23,6 +23,12 @@ defineProps({
         type: String,
         required: true
     },
+
+    services: {
+        type: Array,
+        required: true,
+    },
+
 });
 
 </script>
@@ -76,7 +82,7 @@ defineProps({
                     </div>
                 </div>
                 <hr>
-                <KeywordPositionForm :csrf_token="csrf_token"></KeywordPositionForm>
+                <KeywordPositionForm :csrf_token="csrf_token" :services="services"></KeywordPositionForm>
             </div>
 
         </div> 

@@ -1,9 +1,10 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLanguagesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -18,7 +19,11 @@ class CreateLanguagesTable extends Migration
             $table->string('name'); 
         });
 
-        $languages = ['tr' => 'Türkçe', 'en' => 'English', 'es' => 'Spanish', 'de' => 'German'];
+        $languages = [
+            'tr' => 'TR', 
+            'en' => 'EN', 
+        ];
+
         foreach ($languages as $code => $name) {
             DB::table('languages')->insert([
                 'code' => $code,
@@ -36,4 +41,4 @@ class CreateLanguagesTable extends Migration
     {
         Schema::dropIfExists('languages');
     }
-}
+};

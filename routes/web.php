@@ -10,6 +10,7 @@ use App\Http\Controllers\KeywordSearchController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\DomainController;
+use App\Http\Controllers\RecaptchaController;
 
 // Welcome route
 Route::get('/', function () {
@@ -55,6 +56,12 @@ Route::middleware('auth')->group(function () {
     // Keyword routes
     Route::resource('keywords', KeywordController::class);
     Route::get('keywords/report/{id}', [KeywordController::class, 'report'])->name('keywords.domain');
+
+    // Search services
+    Route::resource('search-services', SearchServiceController::class);
+
+    Route::get('recaptchajs', [RecaptchaController::class, 'index'])->name('recaptcha.js');
+
 });
 
 // Auth routes

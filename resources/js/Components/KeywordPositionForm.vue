@@ -76,21 +76,25 @@ var props = defineProps({
     languages: {
         type: Object,
         default: () => ({
-            'tr': 'Türkçe',
-            'en': 'English'
+            'tr': 'TR',
+            'en': 'EN'
         })
     },
     countries: {
         type: Object,
         default: () => ({
-            'tr': 'Turkiye',
+            'tr': 'TR',
             'us': 'US'
         })
     },
     csrf_token: {
         type: String,
         required: true
-    }, 
+    },
+    services: {
+        type: Array,
+        required: true,
+    },
 });
 
 const keywordPositions = ref([]);
@@ -106,10 +110,12 @@ const country = ref('us');
 const language = ref('en');
 const position = ref('');
 
-const serviceOptions = reactive([
-    { value: 'google.selenium', text: 'google.selenium', requiresRecaptcha: false, sitekey: '' },
-    { value: 'tools.seo.ai', text: 'tools.seo.ai', requiresRecaptcha: true, sitekey: '6Lcj8BkpAAAAAPzLvHsrB4zDD9v5HOe7pjYHXXp8' }
-]);
+const serviceOptions = reactive(props.services.map(service => ({
+    value: service.key,
+    text: service.name,
+    requiresRecaptcha: service.requires_recaptcha,
+    sitekey: service.recaptcha_sitekey,
+})));
 
 const isRecaptchaRequired = computed(() => {
     const selectedService = serviceOptions.find(option => option.value === service.value);
@@ -270,7 +276,7 @@ onMounted(() => {
     listRecentSearches();
     var recaptcha_script = document.createElement('script');
     recaptcha_script.type = 'text/javascript';
-    recaptcha_script.src = 'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit';
+    recaptcha_script.src = route('recaptcha.js');
     document.head.appendChild(recaptcha_script);
 });
 

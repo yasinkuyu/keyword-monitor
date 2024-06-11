@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 class RecaptchaController extends Controller
 {
-    public function downloadRecaptchaJs()
+    public function index()
     {
         // URL of the Recaptcha API file
-        $recaptchaUrl = 'https://www.google.com/recaptcha/api.js?render=explicit';
+        $recaptchaUrl = 'https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit';
 
         // Add referer check
         $referer = 'https://seo.ai';
