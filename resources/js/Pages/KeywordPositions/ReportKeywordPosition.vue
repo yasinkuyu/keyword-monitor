@@ -22,18 +22,18 @@ var form = useForm({
     start_date: props.startDate,
     end_date: props.endDate,
 })
-
+console.log("props.startDate:", props.startDate)
 // Define refs for chart
 const chartRef = ref(null)
 const chartInstance = ref(null)
 const isChartLoaded = ref(false)
 const selectedDate = ref({
-  startDate: "",
-  endDate: "",
+  startDate: props.startDate,
+  endDate: props.endDate,
 });
 
 const formatter = ref({
-  date: 'YYYY-MM-DD', //'DD MM YYYY',
+  date: 'YYYY-MM-DD', //'DD MMM YYYY',
   month: 'MMM',
 })
 
@@ -133,8 +133,6 @@ const fetchData = () => {
 // Function to set selected date range
 const setDateRange = (newDate) => {
 
-    console.log("newDate:",newDate);
-
     form.start_date = newDate.startDate
     form.end_date = newDate.endDate
 
@@ -188,7 +186,7 @@ onMounted(() => {
                         <div class="p-4">
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <Datepicker v-model="selectedDate" format="YYYY-MM-DD" :shortcuts="customShortcuts" @update:model-value="setDateRange" :formatter="formatter" :auto-apply="true" />
+                                    <Datepicker v-model="selectedDate" :formatter="formatter" :shortcuts="customShortcuts" @update:model-value="setDateRange" :auto-apply="true" separator=" to "/>
                                 </div>
                                 
                                 <div>
