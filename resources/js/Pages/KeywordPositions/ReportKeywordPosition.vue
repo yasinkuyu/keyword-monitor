@@ -22,7 +22,7 @@ var form = useForm({
     start_date: props.startDate,
     end_date: props.endDate,
 })
-console.log("props.startDate:", props.startDate)
+
 // Define refs for chart
 const chartRef = ref(null)
 const chartInstance = ref(null)
