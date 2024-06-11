@@ -17,6 +17,7 @@ class KeywordPositionController extends Controller
     public function index(Request $request)
     {
         $keywordPositions = Auth::user()->positions()->with(['domain', 'keyword'])
+            ->orderBy('keyword_positions.updated_at', 'DESC')
             ->paginate(10);
 
         return Inertia::render('KeywordPositions/ListKeywordPositions', [
