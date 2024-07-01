@@ -38,6 +38,11 @@ Keyword Monitor is a web application built with Laravel framework. It allows use
 7. Run database migrations: `php artisan migrate`
 8. Start the development server: `php artisan serve` && `npm run dev`
 
+## Task Schedule
+
+`* * * * * /opt/homebrew/Cellar/php/8.3.6/bin/php /DEV/KeywordMonitor/artisan schedule:run >> /dev/null 2>&1`
+
+This cron job runs the `schedule:run` command every minute. This command will run any scheduled tasks that are defined in the `App\Console\Kernel` class. The `>> /dev/null 2>&1` part of the command redirects the output of the command to the `/dev/null` file, which is a special file that discards all data written to it. This prevents the output of the command from being displayed in the terminal.
 If you encounter any router issues, run the `php artisan ziggy:generate` command.
 
 ## Usage
