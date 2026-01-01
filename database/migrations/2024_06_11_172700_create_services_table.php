@@ -23,6 +23,7 @@ return new class extends Migration
         DB::table('services')->insert([
             ['key' => 'google.selenium', 'name' => 'Google Selenium', 'requires_recaptcha' => false, 'recaptcha_sitekey' => null],
             ['key' => 'tools.seo.ai', 'name' => 'tools.seo.ai', 'requires_recaptcha' => true, 'recaptcha_sitekey' => '6Lcj8BkpAAAAAPzLvHsrB4zDD9v5HOe7pjYHXXp8'],
+            ['key' => 'seremium', 'name' => 'Seremium', 'requires_recaptcha' => false, 'recaptcha_sitekey' => null],
         ]);
     }
 

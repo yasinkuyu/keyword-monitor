@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use App\Models\KeywordPosition;
 use App\Models\Domain;
-use App\Models\Keyword; 
-use App\Models\Language; 
-use App\Models\Country; 
+use App\Models\Keyword;
+use App\Models\KeywordPosition;
 use Auth;
-
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class KeywordSearchController extends Controller
 {
-   
     public function report(Request $request, $keyword_id = null)
     {
         $start_date = $request->input('start_date') ?: now()->subDays(30);
@@ -27,7 +21,7 @@ class KeywordSearchController extends Controller
             ->whereBetween('keyword_positions.created_at', [$start_date, $end_date])
             ->where('keyword_positions.keyword_id', $keyword_id)
             ->get()
-            ->groupBy(fn($item) => $item->domain->name . '-' . $item->country . '-' . $item->language);
+            ->groupBy(fn ($item) => $item->domain->name.'-'.$item->country.'-'.$item->language);
 
         $labels = [];
         $datasets = [];
@@ -41,7 +35,7 @@ class KeywordSearchController extends Controller
             'rgba(231, 233, 237, 1)',
             'rgba(75, 192, 192, 1)',
             'rgba(54, 162, 235, 1)',
-            'rgba(104, 132, 245, 1)'
+            'rgba(104, 132, 245, 1)',
         ];
         $backgroundColors = [
             'rgba(255, 99, 132, 0.2)',
@@ -53,14 +47,13 @@ class KeywordSearchController extends Controller
             'rgba(231, 233, 237, 0.2)',
             'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
-            'rgba(104, 132, 245, 0.2)'
+            'rgba(104, 132, 245, 0.2)',
         ];
-
 
         $colorIndex = 0;
 
         foreach ($keywordPositions as $groupKey => $positions) {
-            list($domain_id, $country, $language) = explode('-', $groupKey);
+            [$domain_id, $country, $language] = explode('-', $groupKey);
             $groupLabel = "{$domain_id}. {$country} {$language}";
 
             if (empty($labels)) {
@@ -82,7 +75,7 @@ class KeywordSearchController extends Controller
                 'pointStyle' => 'circle',
                 'borderWidth' => 1.7,
                 'pointRadius' => 4,
-                'pointHoverRadius' => 8
+                'pointHoverRadius' => 8,
             ];
 
             $colorIndex++;
@@ -90,7 +83,7 @@ class KeywordSearchController extends Controller
 
         $chartData = [
             'labels' => $labels,
-            'datasets' => $datasets
+            'datasets' => $datasets,
         ];
 
         $lastMonths = [];
@@ -101,7 +94,7 @@ class KeywordSearchController extends Controller
             $lastMonths[] = [
                 'name' => $month,
                 'startDate' => $startDate,
-                'endDate' => $endDate
+                'endDate' => $endDate,
             ];
         }
 
@@ -123,23 +116,23 @@ class KeywordSearchController extends Controller
         $language = $request->input('language');
         $service = $request->input('service');
 
-        if (!$domain_id) {
+        if (! $domain_id) {
             return response()->json(['error' => 'Enter the domain.'], 404);
         }
 
-        if (!$keyword_id) {
+        if (! $keyword_id) {
             return response()->json(['error' => 'Enter the keyword.'], 404);
         }
 
-        if (!$country) {
+        if (! $country) {
             return response()->json(['error' => 'Enter the country.'], 404);
         }
 
-        if (!$language) {
+        if (! $language) {
             return response()->json(['error' => 'Enter the language.'], 404);
         }
 
-        if (!$service) {
+        if (! $service) {
             return response()->json(['error' => 'Select the service.'], 404);
         }
 
@@ -147,7 +140,7 @@ class KeywordSearchController extends Controller
         $keywordRow = Keyword::find($keyword_id);
 
         $domain = $domainRow->name;
-        $keyword = $keywordRow->keyword;    
+        $keyword = $keywordRow->keyword;
 
         try {
 
@@ -167,10 +160,17 @@ class KeywordSearchController extends Controller
                         $country
                     );
                     break;
+                case 'seremium':
+                    $position = \App\Helpers\ServiceSeremium::get(
+                        $keyword,
+                        $domain,
+                        $country
+                    );
+                    break;
                 default:
-
+                    return response()->json(['error' => 'Invalid service selected.'], 400);
             }
-            
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -186,5 +186,4 @@ class KeywordSearchController extends Controller
 
         return response()->json(['position' => $position]);
     }
-    
 }
