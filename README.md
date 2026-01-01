@@ -15,7 +15,7 @@ Keyword Monitor is a web application built with Laravel framework. It allows use
 ## Features
 
 -   Keyword management: Add, edit, and delete keywords to track.
--   Search engine selection: Choose the service to track (e.g., google.selenium, tools.seo.ai).
+-   Search engine selection: Choose the service to track (e.g., google.selenium, tools.seo.ai, seremium).
 -   Position tracking: Monitor the position of your website for each keyword on the selected search engine.
 -   Reporting: Generate reports to analyze the performance of your keywords over time.
 -   User authentication: Secure access to the application with user registration and login.
@@ -52,6 +52,33 @@ If you encounter any router issues, run the `php artisan ziggy:generate` command
 3. Select the search engine for tracking
 4. Monitor the position of your website for the added keywords
 5. Generate reports to analyze the performance over time
+
+## Seremium Service Configuration
+
+The Seremium service is a SERP API provider that requires configuration:
+
+1. Obtain an API key from your Seremium provider
+2. Add the following to your `.env` file:
+   ```
+   SEREMIUM_API_KEY=your_api_key_here
+   SEREMIUM_API_URL=https://api.seremium.com/v1/search
+   SEREMIUM_DEBUG=false
+   ```
+3. Set `SEREMIUM_DEBUG=true` to enable debug logging for troubleshooting
+   - Debug logs will show request/response details without exposing secrets
+   - Logs are written to your configured Laravel log channel
+
+### Error Handling
+
+The Seremium service distinguishes between different error types:
+- **Authentication errors** (401/403): Invalid API key
+- **Quota exceeded** (402): API quota limit reached
+- **Rate limiting** (429): Too many requests - automatic retry with exponential backoff
+- **Server errors** (5xx): Provider outage - automatic retry with exponential backoff
+- **Domain not found**: Returns position 0 (valid result, not an error)
+- **Provider failures**: Throw exceptions with clear error messages
+
+The service implements retry logic with exponential backoff for transient failures (rate limits and server errors).
 
 ## Demo Data
 

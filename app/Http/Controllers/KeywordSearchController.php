@@ -167,8 +167,15 @@ class KeywordSearchController extends Controller
                         $country
                     );
                     break;
+                case 'seremium':
+                    $position = \App\Helpers\ServiceSeremium::get(
+                        $keyword,
+                        $domain,
+                        $country
+                    );
+                    break;
                 default:
-
+                    return response()->json(['error' => 'Invalid service selected.'], 400);
             }
             
         } catch (\Exception $e) {
