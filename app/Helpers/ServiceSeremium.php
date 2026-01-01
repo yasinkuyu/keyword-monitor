@@ -2,6 +2,11 @@
 
 namespace App\Helpers;
 
+use App\Exceptions\SeremiumAuthException;
+use App\Exceptions\SeremiumException;
+use App\Exceptions\SeremiumQuotaException;
+use App\Exceptions\SeremiumRateLimitException;
+use App\Exceptions\SeremiumServerException;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -21,9 +26,10 @@ class ServiceSeremium
 
     const NOT_FOUND = 'NOT_FOUND';
 
-    private static $maxRetries = 3;
+    // Retry configuration
+    const MAX_RETRIES = 3;
 
-    private static $initialRetryDelay = 1; // seconds
+    const INITIAL_RETRY_DELAY = 1; // seconds
 
     /**
      * Get keyword position from Seremium API
@@ -34,7 +40,7 @@ class ServiceSeremium
      * @param  string|null  $apiKey  The API key for authentication
      * @return int|string Returns position (1-based) or error constant
      *
-     * @throws Exception When provider failure occurs
+     * @throws SeremiumException When provider failure occurs
      */
     public static function get($keyword, $domain, $country, $apiKey = null)
     {
@@ -43,7 +49,7 @@ class ServiceSeremium
 
         if (! $apiKey) {
             self::logDebug('Seremium API key not configured');
-            throw new Exception('Seremium API key not configured. Please set SEREMIUM_API_KEY in your environment.');
+            throw new SeremiumException('Seremium API key not configured. Please set SEREMIUM_API_KEY in your environment.');
         }
 
         $url = env('SEREMIUM_API_URL', 'https://api.seremium.com/v1/search');
@@ -58,7 +64,7 @@ class ServiceSeremium
         $attempt = 0;
         $lastException = null;
 
-        while ($attempt < self::$maxRetries) {
+        while ($attempt < self::MAX_RETRIES) {
             try {
                 $startTime = microtime(true);
 
@@ -84,47 +90,44 @@ class ServiceSeremium
                     return self::parseResponse($response->json(), $domain);
                 } elseif ($statusCode === 401 || $statusCode === 403) {
                     self::logDebug("Authentication failed with status $statusCode");
-                    throw new Exception("Authentication failed. Please check your Seremium API key. (HTTP $statusCode)");
+                    throw new SeremiumAuthException("Authentication failed. Please check your Seremium API key. (HTTP $statusCode)");
                 } elseif ($statusCode === 402) {
                     self::logDebug('Quota exceeded');
-                    throw new Exception('API quota exceeded. Please upgrade your Seremium plan or wait for quota reset. (HTTP 402)');
+                    throw new SeremiumQuotaException('API quota exceeded. Please upgrade your Seremium plan or wait for quota reset. (HTTP 402)');
                 } elseif ($statusCode === 429) {
                     // Rate limited - retry with backoff
                     $attempt++;
-                    if ($attempt < self::$maxRetries) {
+                    if ($attempt < self::MAX_RETRIES) {
                         $delay = self::calculateBackoff($attempt);
                         self::logDebug("Rate limited, retrying in {$delay}s", ['attempt' => $attempt]);
                         sleep($delay);
 
                         continue;
                     }
-                    throw new Exception("Rate limit exceeded after {$attempt} attempts. Please try again later. (HTTP 429)");
+                    throw new SeremiumRateLimitException("Rate limit exceeded after {$attempt} attempts. Please try again later. (HTTP 429)");
                 } elseif ($statusCode >= 500) {
                     // Server error - retry with backoff
                     $attempt++;
-                    if ($attempt < self::$maxRetries) {
+                    if ($attempt < self::MAX_RETRIES) {
                         $delay = self::calculateBackoff($attempt);
                         self::logDebug("Server error (HTTP {$statusCode}), retrying in {$delay}s", ['attempt' => $attempt]);
                         sleep($delay);
 
                         continue;
                     }
-                    throw new Exception("Seremium server error after {$attempt} attempts. (HTTP {$statusCode})");
+                    throw new SeremiumServerException("Seremium server error after {$attempt} attempts. (HTTP {$statusCode})");
                 } else {
                     // Other HTTP errors
                     self::logDebug('Unexpected HTTP status', [
                         'status_code' => $statusCode,
                         'response_preview' => substr($response->body(), 0, 200),
                     ]);
-                    throw new Exception("Unexpected response from Seremium API. (HTTP {$statusCode})");
+                    throw new SeremiumException("Unexpected response from Seremium API. (HTTP {$statusCode})");
                 }
 
             } catch (Exception $e) {
-                // If it's our own exception (business logic), rethrow immediately
-                if (strpos($e->getMessage(), 'Seremium') !== false ||
-                    strpos($e->getMessage(), 'Authentication') !== false ||
-                    strpos($e->getMessage(), 'quota') !== false ||
-                    strpos($e->getMessage(), 'configured') !== false) {
+                // If it's our own Seremium exception (business logic), rethrow immediately
+                if ($e instanceof SeremiumException) {
                     throw $e;
                 }
 
@@ -132,7 +135,7 @@ class ServiceSeremium
                 $lastException = $e;
                 $attempt++;
 
-                if ($attempt < self::$maxRetries) {
+                if ($attempt < self::MAX_RETRIES) {
                     $delay = self::calculateBackoff($attempt);
                     self::logDebug("Connection error, retrying in {$delay}s", [
                         'attempt' => $attempt,
@@ -143,12 +146,12 @@ class ServiceSeremium
                     continue;
                 }
 
-                throw new Exception("Failed to connect to Seremium API after {$attempt} attempts: ".$e->getMessage());
+                throw new SeremiumException("Failed to connect to Seremium API after {$attempt} attempts: ".$e->getMessage(), 0, $e);
             }
         }
 
         // Should not reach here, but just in case
-        throw $lastException ?? new Exception("Failed to get position from Seremium after {$attempt} attempts");
+        throw $lastException ?? new SeremiumException("Failed to get position from Seremium after {$attempt} attempts");
     }
 
     /**
@@ -164,14 +167,14 @@ class ServiceSeremium
     {
         if (! is_array($data)) {
             self::logDebug('Invalid response format', ['type' => gettype($data)]);
-            throw new Exception('Invalid response format from Seremium API');
+            throw new SeremiumException('Invalid response format from Seremium API');
         }
 
         // Check for API-level errors in the response
         if (isset($data['error'])) {
             $errorMsg = $data['error']['message'] ?? $data['error'];
             self::logDebug('API returned error', ['error' => $errorMsg]);
-            throw new Exception("Seremium API error: {$errorMsg}");
+            throw new SeremiumException("Seremium API error: {$errorMsg}");
         }
 
         // Try different possible response structures
@@ -198,7 +201,7 @@ class ServiceSeremium
             self::logDebug('Could not find results in response', [
                 'available_keys' => array_keys($data),
             ]);
-            throw new Exception('Could not parse results from Seremium API response');
+            throw new SeremiumException('Could not parse results from Seremium API response');
         }
 
         self::logDebug('Parsing results', ['result_count' => count($results)]);
@@ -257,7 +260,7 @@ class ServiceSeremium
     private static function calculateBackoff($attempt)
     {
         // Exponential backoff: 1s, 2s, 4s, 8s, ... (capped at 30s)
-        return min(self::$initialRetryDelay * pow(2, $attempt - 1), 30);
+        return min(self::INITIAL_RETRY_DELAY * pow(2, $attempt - 1), 30);
     }
 
     /**
@@ -292,7 +295,7 @@ class ServiceSeremium
         foreach ($context as $key => $value) {
             $lowerKey = strtolower($key);
             foreach ($sensitiveKeys as $sensitiveKey) {
-                if (strpos($lowerKey, $sensitiveKey) !== false) {
+                if (str_contains($lowerKey, $sensitiveKey)) {
                     $context[$key] = '[REDACTED]';
                     break;
                 }
