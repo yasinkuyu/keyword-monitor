@@ -13,19 +13,6 @@ use Illuminate\Support\Facades\Log;
 
 class ServiceSeremium
 {
-    // Error states to distinguish from valid results
-    const ERROR_AUTH_FAILED = 'AUTH_FAILED';
-
-    const ERROR_QUOTA_EXCEEDED = 'QUOTA_EXCEEDED';
-
-    const ERROR_RATE_LIMITED = 'RATE_LIMITED';
-
-    const ERROR_SERVER_ERROR = 'SERVER_ERROR';
-
-    const ERROR_INVALID_RESPONSE = 'INVALID_RESPONSE';
-
-    const NOT_FOUND = 'NOT_FOUND';
-
     // Retry configuration
     const MAX_RETRIES = 3;
 
@@ -38,7 +25,7 @@ class ServiceSeremium
      * @param  string  $domain  The domain to search for
      * @param  string  $country  The country code
      * @param  string|null  $apiKey  The API key for authentication
-     * @return int|string Returns position (1-based) or error constant
+     * @return int Returns position (1-based) or 0 when domain not found
      *
      * @throws SeremiumException When provider failure occurs
      */
