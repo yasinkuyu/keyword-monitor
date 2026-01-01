@@ -18,18 +18,6 @@ return new class extends Migration
             $table->string('code', 5)->unique();
             $table->string('name'); 
         });
-
-        $languages = [
-            'tr' => 'TR', 
-            'en' => 'EN', 
-        ];
-
-        foreach ($languages as $code => $name) {
-            DB::table('languages')->insert([
-                'code' => $code,
-                'name' => $name,
-            ]);
-        }
     }
 
     /**

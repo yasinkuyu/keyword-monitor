@@ -36,7 +36,41 @@ Keyword Monitor is a web application built with Laravel framework. It allows use
 5. Generate an application key: `php artisan key:generate`
 6. Configure your database credentials in the `.env` file
 7. Run database migrations: `php artisan migrate`
-8. Start the development server: `php artisan serve` && `npm run dev`
+8. Seed the database with languages and countries: `php artisan db:seed`
+9. Start the development server: `php artisan serve` && `npm run dev`
+
+## Adding New Languages and Countries
+
+The application uses database-driven lists for languages and countries. To add new languages or countries:
+
+### Adding a New Language
+
+1. Open `database/seeders/LanguagesTableSeeder.php`
+2. Add a new entry to the `$languages` array with `code` and `name`:
+   ```php
+   ['code' => 'hi', 'name' => 'Hindi'],
+   ```
+3. Run the seeder: `php artisan db:seed --class=LanguagesTableSeeder`
+   - The seeder is idempotent, so you can run it multiple times safely
+   - Existing records will be updated if you change the name
+
+### Adding a New Country
+
+1. Open `database/seeders/CountriesTableSeeder.php`
+2. Add a new entry to the `$countries` array with `code` and `name`:
+   ```php
+   ['code' => 'nz', 'name' => 'New Zealand'],
+   ```
+3. Run the seeder: `php artisan db:seed --class=CountriesTableSeeder`
+   - The seeder is idempotent, so you can run it multiple times safely
+   - Existing records will be updated if you change the name
+
+### Notes
+
+- Language and country codes must be unique (enforced by database constraints)
+- New languages and countries will automatically appear in the dashboard dropdowns
+- No code changes are required in controllers or views
+- You can run all seeders with `php artisan db:seed` or specific seeders as shown above
 
 ## Task Schedule
 
